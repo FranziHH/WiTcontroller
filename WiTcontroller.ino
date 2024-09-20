@@ -1323,6 +1323,7 @@ void additionalButtonLoop() {
 void setup() {
   Serial.begin(115200);
   u8g2.begin();
+  u8g2.enableUTF8Print();
   // i2cSetClock(0,400000);
 
   clearOledArray(); oledText[0] = appName; oledText[6] = appVersion; oledText[2] = MSG_START;
