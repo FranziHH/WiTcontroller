@@ -1,3 +1,12 @@
+# ! Fork From WiTcontroller
+This is Forked From https://github.com/flash62au/WiTcontroller
+
+My Changes Are:
+* add Entry for ESP32 in platformio.ini
+* work on german translations: Umlauts must be encoded, strings are to long
+* my Remix for 3d printed Case, for many different components from different sellers [Case for DccExController || WiTcontroller - Remix ](https://www.thingiverse.com/thing:6753459)
+
+
 # WiTcontroller
 
 A WiTcontroller is a simple DIY, handheld controller that talks to a WiThrottle Server (JMRI, DCC-EX EX-CommandStation, Digitrax LnWi and many others) using the WiThrottle protocol to control DCC model trains. 
