@@ -461,7 +461,11 @@ Bei Interesse kontaktieren Sie mich bitte direkt für eine Anleitung.
 
 ## Change Log
 
-### V1.66
+### V1.68
+- improve bouncing on the pot values
+- bug fix for functions list & menus closing when the pot value bounces
+
+### V1.67
 - bug fix for adding locos greater than 300 and less than 499
 
 ### V1.66
