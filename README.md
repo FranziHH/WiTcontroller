@@ -67,6 +67,9 @@ A WiTcontroller is a simple DIY, handheld controller that talks to a WiThrottle 
 *Pinouts for Optional 4x4 keypad and Additional Buttons*
 ![Assembly diagram - 4x4 keypad and Optional Additional Buttons](WiTcontroller%20-%204x4%20keypad,%20Optional%20Buttons%20-%20pinouts%20v0.1.png)
 
+*Pinouts for Optional Battery Monitor and Additional Buttons*
+![Assembly diagram - Optional Battery Monitor and Additional Buttons](WiTcontroller%20-%20Optional%20battery%20monitor.png)
+
 *Default Pins for the keypads*
 
 3x4 Keypad - Left to Right
@@ -297,9 +300,6 @@ Pressing the Encoder button while the ESP32 is in Deep Sleep will revive it.
 *Trying to to connect to SSID*<br />
 ![Trying to to connect to SSID](images/screenshots/trying_to_connect.jpg)
 
-*Connecting to SSID*<br />
-![Connecting to SSID](images/screenshots/trying_to_connect.jpg)
-
 ## WiThrottle Server Connection Screens
 
 *WiThrottle Server List*<br />
@@ -425,13 +425,17 @@ config_buttons.h can include the following optional defines:
 
 ### Instructions for optional use of a voltage divider to show the battery charge level
 
+See diagram above for how to wire in the volage divider.  47k resistors are used, but this can be varied as long as the output to the pin is limited to below 3.3v. See additional information related to the Pangodream Library that WiTcontroller uses here... https://www.pangodream.es/tag/18650-ion-li
+
+The diagram has the voltage divider spliced into battery leads, but you can solder the positive in to the back of the battery connector (on the ESP32) if you prefer. The ground can be taken from any ground pin.
+
 *To enable the battery monitor*, set the following to ``true``. The default is ``false``.
 
 ``#define USE_BATTERY_TEST true``
 
-*To set which pin to use.* The default is ``36``.
+*To set which pin to use.* The default is ``34``.  In theory 34, 35, 36, or 39 should be able to be used, but only 34 and 36 have been tested.   (36 is marked 'VP' on the board.  39 is marked 'VN' on the board.)
 
-``#define BATTERY_TEST_PIN 36``
+``#define BATTERY_TEST_PIN 34``
 
 If the battery does not show 100% when plugged into the charger, you may need to adjust this value. The default is ``1.7``.
 
@@ -469,6 +473,12 @@ Bei Interesse kontaktieren Sie mich bitte direkt für eine Anleitung.
 ---
 
 ## Change Log
+
+### V1.71
+- add the ability to define the consist follow function options for all 32 functions ``CONSIST_FUNCTION_FOLLOW_F0`` to ``CONSIST_FUNCTION_FOLLOW_F31``
+
+### V1.70
+- add define to enable or disable the heartbeat by default    ``#define HEARTBEAT_ENABLED true``
 
 ### V1.69
 - New define added for if no response is received from the server in the specified period (milliseconds), shut down. MAX_HEARTBEAT_PERIOD   default is 4 minutes = 240000 
