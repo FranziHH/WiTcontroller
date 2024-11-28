@@ -58,3 +58,4 @@ build\preproc\*.*
 config_network.h
 config_buttons.h
 config_buttons_keep.h
+config_buttons_old.h
