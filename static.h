@@ -1,5 +1,5 @@
 const String appName = "WiTcontroller";
-const String appVersion = "v1.75";
+const String appVersion = "v1.76";
 
 #ifndef DEVICE_NAME
    #define DEVICE_NAME "WiTcontroller"
@@ -437,6 +437,12 @@ const int glyph_speed_step = 0x00d6;
 
 // if defined in config_buttons.h these values will be overwritten
 //
+#ifndef ENCODER_ROTATION_CLOCKWISE_IS_INCREASE_SPEED
+   #define ENCODER_ROTATION_CLOCKWISE_IS_INCREASE_SPEED false // counter clockwise
+#endif 
+#ifndef TOGGLE_DIRECTION_ON_ENCODER_BUTTON_PRESSED_WHEN_STATIONAY
+   #define TOGGLE_DIRECTION_ON_ENCODER_BUTTON_PRESSED_WHEN_STATIONAY true
+#endif
 // speed increase for each click of the encoder 
 #ifdef SPEED_STEP
   const int speedStep = SPEED_STEP;
@@ -453,6 +459,9 @@ const int glyph_speed_step = 0x00d6;
   const int speedStepAdditionalMultiplier = SPEED_STEP_MULTIPLIER;
 #else
   const int speedStepAdditionalMultiplier = 2;
+#endif
+#ifndef SPEED_STEP_ADDITIONAL_MULTIPLIER
+   #define SPEED_STEP_ADDITIONAL_MULTIPLIER 2
 #endif
 
 #ifdef  DISPLAY_SPEED_AS_PERCENT
@@ -958,4 +967,8 @@ const char ssidPasswordBlankChar = 164;
 #endif
 #ifndef STARTUP_COMMAND_4
    #define STARTUP_COMMAND_4 ""
+#endif
+
+#ifndef ACQUIRE_ROSTER_ENTRY_IF_ONLY_ONE
+   #define ACQUIRE_ROSTER_ENTRY_IF_ONLY_ONE false
 #endif
