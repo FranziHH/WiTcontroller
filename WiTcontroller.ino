@@ -14,6 +14,10 @@
 #include <WiFi.h>                 // https://github.com/espressif/arduino-esp32/tree/master/libraries/WiFi     GPL 2.1
 #include <ESPmDNS.h>              // https://github.com/espressif/arduino-esp32/blob/master/libraries/ESPmDNS  GPL 2.1
 
+// ----------------------
+
+#include <Preferences.h>
+
 // use the Arduino IDE 'Library' Manager to get these libraries
 #include <Keypad.h>               // https://www.arduinolibraries.info/libraries/keypad                        GPL 3.0
 #include <U8g2lib.h>              // https://github.com/olikraus/u8g2  (Just get "U8g2" via the Arduino IDE Library Manager)   new-bsd
@@ -43,6 +47,15 @@
  #define debug_printf(...)
 #endif
 int debugLevel = DEBUG_LEVEL;
+
+
+// *********************************************************************************
+// non-volatile storage
+
+Preferences nvsPrefs;
+bool nvsInit = false;
+bool nvsPrefsSaved = false;
+bool preferencesRead = false;
 
 // *********************************************************************************
 
@@ -98,8 +111,8 @@ bool useBatteryTest = USE_BATTERY_TEST;
   ShowBattery showBatteryTest = NONE;
 #endif
 bool useBatteryPercentAsWellAsIcon = USE_BATTERY_PERCENT_AS_WELL_AS_ICON;
-int lastBatteryTestValue = 0; 
-double lastBatteryCheckTime = 0;
+int lastBatteryTestValue = 100; 
+double lastBatteryCheckTime = -10000;
 #if USE_BATTERY_TEST
   Pangodream_18650_CL BL(BATTERY_TEST_PIN,BATTERY_CONVERSION_FACTOR);
 #endif
@@ -410,6 +423,10 @@ class MyDelegate : public WiThrottleProtocolDelegate {
     void receivedRosterEntries(int size) {
       debug_print("Received Roster Entries. Size: "); debug_println(size);
       rosterSize = (size<maxRoster) ? size : maxRoster;
+
+      if (rosterSize==0) {
+        setupPreferences(false);  // if not roster read the prefeences immediately otherwise wait till we get them all
+      }
     }
     void receivedRosterEntry(int index, String name, int address, char length) {
       debug_print("Received Roster Entry, index: "); debug_print(index); debug_println(" - " + name);
@@ -436,6 +453,8 @@ class MyDelegate : public WiThrottleProtocolDelegate {
             rosterSortedIndex[i] = (rosterSortPointers[i][11]-'0')*10 + (rosterSortPointers[i][12]-'0');
             debug_print("Roster sorted: "); debug_print(rosterSortPointers[i]); debug_print(" | "); debug_println(rosterName[rosterSortedIndex[i]]);
           }
+
+          setupPreferences(false);  // if there is a roster, we will have waited 
         }
       }
       receivingServerInfoOled(index, rosterSize);
@@ -445,6 +464,7 @@ class MyDelegate : public WiThrottleProtocolDelegate {
           doOneStartupCommand("*1#0");
         }
       #endif
+
     }
     void receivedTurnoutEntries(int size) {
       debug_print("Received Turnout Entries. Size: "); debug_println(size);
@@ -544,6 +564,7 @@ void browseSsids() { // show the found SSIDs
   clearOledArray(); 
   setAppnameForOled();
   oledText[2] = MSG_BROWSING_FOR_SSIDS;
+  writeOledBattery();
   writeOledArray(false, false, true, true);
 
   WiFi.setScanMethod(WIFI_ALL_CHANNEL_SCAN);
@@ -586,7 +607,7 @@ void browseSsids() { // show the found SSIDs
 
     clearOledArray(); oledText[10] = MSG_SSIDS_FOUND;
 
-     writeOledFoundSSids("");
+    writeOledFoundSSids("");
 
     // oledText[5] = menu_select_ssids_from_found;
     setMenuTextForOled(menu_select_ssids_from_found);
@@ -664,10 +685,12 @@ void showListOfSsids() {  // show the list from the specified values in config_n
 
   clearOledArray(); 
   setAppnameForOled(); 
+  writeOledBattery();
   writeOledArray(false, false);
 
   if (maxSsids == 0) {
     oledText[1] = MSG_NO_SSIDS_FOUND;
+    writeOledBattery();
     writeOledArray(false, false, true, true);
     debug_println(oledText[1]);
   
@@ -730,6 +753,7 @@ void connectSsid() {
   clearOledArray(); 
   setAppnameForOled();
   oledText[1] = selectedSsid; oledText[2] + "connecting...";
+  writeOledBattery();
   writeOledArray(false, false, true, true);
 
   double startTime = millis();
@@ -744,6 +768,7 @@ void connectSsid() {
     setAppnameForOled(); 
     for (int i = 0; i < 3; ++i) {  // Try three times
       oledText[1] = selectedSsid; oledText[2] =  String(MSG_TRYING_TO_CONNECT) + " (" + String(i) + ")";
+      writeOledBattery();
       writeOledArray(false, false, true, true);
 
       nowTime = startTime;
@@ -757,6 +782,7 @@ void connectSsid() {
             && ((nowTime-startTime) <= SSID_CONNECTION_TIMEOUT) ) { // wait for X seconds to see if the connection worked
         if (millis() > tempTimer + 250) {
           oledText[3] = getDots(j);
+          writeOledBattery();
           writeOledArray(false, false, true, true);
           j++;
           debug_print(".");
@@ -778,6 +804,7 @@ void connectSsid() {
       debug_print("Connected. IP address: "); debug_println(WiFi.localIP());
       oledText[2] = MSG_CONNECTED; 
       oledText[3] = MSG_ADDRESS_LABEL + String(WiFi.localIP());
+      writeOledBattery();
       writeOledArray(false, false, true, true);
       // ssidConnected = true;
       ssidConnectionState = CONNECTION_STATE_CONNECTED;
@@ -787,6 +814,7 @@ void connectSsid() {
       if (!MDNS.begin("WiTcontroller")) {
         debug_println("Error setting up MDNS responder!");
         oledText[2] = MSG_BOUNJOUR_SETUP_FAILED;
+        writeOledBattery();
         writeOledArray(false, false, true, true);
         delay(2000);
         ssidConnectionState = CONNECTION_STATE_DISCONNECTED;
@@ -797,6 +825,7 @@ void connectSsid() {
     } else {
       debug_println(MSG_CONNECTION_FAILED);
       oledText[2] = MSG_CONNECTION_FAILED;
+      writeOledBattery();
       writeOledArray(false, false, true, true);
       delay(2000);
       
@@ -841,6 +870,7 @@ void browseWitService() {
   clearOledArray(); 
   oledText[0] = appName; oledText[6] = appVersion; 
   oledText[1] = selectedSsid;   oledText[2] = MSG_BROWSING_FOR_SERVICE;
+  writeOledBattery();
   writeOledArray(false, false, true, true);
   
   startWaitForSelection = millis();
@@ -849,6 +879,7 @@ void browseWitService() {
   if ( (selectedSsid.substring(0,6) == "DCCEX_") && (selectedSsid.length()==12) ) {
     debug_println(MSG_BYPASS_WIT_SERVER_SEARCH);
     oledText[1] = MSG_BYPASS_WIT_SERVER_SEARCH;
+    writeOledBattery();
     writeOledArray(false, false, true, true);
     delay(500);
   } else {
@@ -857,6 +888,7 @@ void browseWitService() {
     && ((nowTime-startTime) <= 10000)) { // try for 10 seconds 
       noOfWitServices = MDNS.queryService(service, proto);
       oledText[3] = getDots(j);
+      writeOledBattery();
       writeOledArray(false, false, true, true);
       j++;
       debug_print(".");
@@ -895,6 +927,7 @@ void browseWitService() {
 
   if (foundWitServersCount == 0) {
     oledText[1] = MSG_NO_SERVICES_FOUND;
+    writeOledBattery();
     writeOledArray(false, false, true, true);
     debug_println(oledText[1]);
     delay(1000);
@@ -959,6 +992,7 @@ void connectWitServer() {
   setAppnameForOled(); 
   oledText[1] = "        " + selectedWitServerIP.toString() + " : " + String(selectedWitServerPort); 
   oledText[2] = "        " + selectedWitServerName; oledText[3] + MSG_CONNECTING;
+  writeOledBattery();
   writeOledArray(false, false, true, true);
   
   startWaitForSelection = millis();
@@ -1099,6 +1133,127 @@ void buildWitEntry() {
      selectedWitServerPort = witServerIpAndPortConstructed.substring(16).toInt();
   }
 }
+
+// *********************************************************************************
+//   Non-Volitile storage functions
+
+void setupPreferences(bool forceClear) {
+  if (preferencesRead) return;
+  debug_println("setupPreferences():");
+
+  nvsPrefs.begin("WitController", true);
+  nvsInit = nvsPrefs.isKey("nvsInit");
+  if ( (nvsInit == false) || (forceClear) ) {
+    debug_println("setupPreferences(): Initialising non-volitile storage ");
+
+    nvsPrefs.end();
+
+    nvsPrefs.begin("WitController", false); // write mode
+    nvsPrefs.putBool("nvsInit", true);
+    nvsInit = true;
+    nvsPrefs.end();
+
+  } else {
+    nvsInit = true;
+    debug_println("setupPreferences(): Non-volitile storage already initialised");
+    readPreferences();
+  }
+}
+
+void readPreferences() {
+  if (preferencesRead) return;
+  debug_println("readPreferences()");
+
+  if (!RESTORE_ACQUIRED_LOCOS) return;
+
+  debug_println("readPreferences(): Reading preferences from non-volitile storage ");
+  nvsPrefs.begin("WitController", true); // read mode
+  nvsInit = nvsPrefs.isKey("nvsInit");
+  if (nvsInit) {
+    debug_println("readPreferences(): Non-volitile storage is initialised");
+    currentThrottleIndex = 0;
+    currentThrottleIndexChar = '0';
+
+    int count = 0;  
+    char key[4];
+    key[3] = 0;
+
+    // int currentThrottle = 0;
+    key[0] = 'L';
+    for (int i=0; i<MAX_THROTTLES; i++) {
+      key[1] = '0' + i;
+      for (int j=0; j<10; j++) { // assume a maximum of 10 locos per throttle
+        key[2] = '0' + j;
+        if (nvsPrefs.isKey(key)) {
+          // if ( (currentThrottle != i) && (count>0) ) {
+          //   doOneStartupCommand("5"); //nextThrottle
+          //   currentThrottle = i;
+          // }
+          String loco = nvsPrefs.getString(key);
+          // doOneStartupCommand("*1" + loco + "#");
+
+          loco = getLocoWithLength(loco);
+          debug_print("add Loco: "); debug_println(loco);
+          wiThrottleProtocol.addLocomotive(key[1], loco);
+          wiThrottleProtocol.getDirection(key[1], loco);
+          wiThrottleProtocol.getSpeed(key[1]);
+          count++;
+        } else {
+          debug_print("readPreferences(): Not Found - Key: "); debug_println(key);
+        }
+      }
+    }
+    currentThrottleIndex = 0;
+    currentThrottleIndexChar = '0';
+    resetFunctionStates(currentThrottleIndex);
+    writeOledSpeed();
+  } else {
+    debug_println("readPreferences(): Non-volitile storage not initialised");
+  }
+  preferencesRead = true;
+  nvsPrefs.end();
+}
+
+void writePreferences() {
+  debug_println("writePreferences(): Writing preferences to non-volitile storage ");
+  nvsPrefs.begin("WitController", false); // write mode
+
+  if (nvsInit) {
+    nvsPrefs.putBool("nvsInit", true);
+
+    int count = 0;  
+    char key[4];
+    key[3] = 0;
+
+    key[0] = 'L';
+    for (int i=0; i<maxThrottles; i++) {
+      key[1] = '0' + i;
+      for (int j=0; j<10; j++) {
+        key[2] = '0' + j;
+        if (j<wiThrottleProtocol.getNumberOfLocomotives(getMultiThrottleChar(i))) {
+          String loco = wiThrottleProtocol.getLocomotiveAtPosition(getMultiThrottleChar(i), j);
+          String locoNumber = loco.substring(1);
+          nvsPrefs.putString(key, locoNumber);
+          debug_print("writePreferences(): Key: "); debug_print(key); debug_print(" - "); debug_println(locoNumber);
+          count++;
+        } else {
+          if (nvsPrefs.isKey(key)) {
+            nvsPrefs.remove(key);
+            debug_print("writePreferences(): Removed Key: "); debug_println(key);
+          }
+        }
+      }
+    }
+  } else {
+    debug_println("writePreferences(): Non-volitile storage not initialised");
+  }
+  nvsPrefs.end();
+}
+
+void clearPreferences() {
+  setupPreferences(true);
+}
+
 
 // *********************************************************************************
 //   Rotary Encoder
@@ -1439,7 +1594,10 @@ void setup() {
   u8g2.enableUTF8Print();
   // i2cSetClock(0,400000);
 
+  batteryTest_loop();  // do the battery check once to start
+
   clearOledArray(); oledText[0] = appName; oledText[6] = appVersion; oledText[2] = MSG_START;
+  writeOledBattery();
   writeOledArray(false, false, true, true);
 
   delay(1000);
@@ -2192,6 +2350,9 @@ void doMenuCommand(char menuItem) {
     case MENU_ITEM_DISCONNECT: { // disconnect   
         if (witConnectionState == CONNECTION_STATE_CONNECTED) {
           witConnectionState = CONNECTION_STATE_DISCONNECTED;
+          clearPreferences();
+          writePreferences();
+          preferencesRead = false;
           disconnectWitServer();
         } else {
           connectWitServer();
@@ -2199,6 +2360,8 @@ void doMenuCommand(char menuItem) {
         break;
       }
     case MENU_ITEM_OFF_SLEEP: { // sleep/off
+        clearPreferences();
+        writePreferences();
         deepSleepStart();
         break;
       }
@@ -2731,6 +2894,7 @@ int compareStrings( const void *str1, const void *str2 ) {
 }
 
 void doStartupCommands() {
+      debug_println("doStartupCommands()");
   for(int i=0; i<4; i++) {
     doOneStartupCommand(startupCommands[i]);
   }
@@ -3308,7 +3472,9 @@ void writeOledSpeedStepMultiplier() {
 }
 
 void writeOledBattery() {
+  debug_print("writeOledBattery(): time: "); debug_println(lastBatteryCheckTime);
   if ( (useBatteryTest) && (showBatteryTest!=NONE) && (lastBatteryCheckTime>0)) {
+    debug_println("writeOledBattery(): do it"); 
     //int lastBatteryTestValue = random(0,100);
     u8g2.setFont(FONT_GLYPHS);
     u8g2.setDrawColor(1);
@@ -3482,6 +3648,7 @@ void deepSleepStart(int shutdownReason) {
     delayPeriod = 10000;
   }
   oledText[3] = MSG_START_SLEEP;
+  writeOledBattery();
   writeOledArray(false, false, true, true);
   delay(delayPeriod);
 
