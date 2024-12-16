@@ -2334,8 +2334,13 @@ void doMenuCommand(char menuItem) {
         writeOledSpeed();
         break;
       }
-    case MENU_ITEM_DROP_BEFORE_ACQUIRE_TOGGLE: { // disable/enable the heartbeat Check
+    case MENU_ITEM_DROP_BEFORE_ACQUIRE_TOGGLE: { // disable/enable drop before Acquire
         toggleDropBeforeAquire();
+        writeOledSpeed();
+        break;
+      }
+    case MENU_ITEM_SAVE_CURRENT_LOCOS: {
+        writePreferences();
         writeOledSpeed();
         break;
       }
@@ -2350,8 +2355,8 @@ void doMenuCommand(char menuItem) {
     case MENU_ITEM_DISCONNECT: { // disconnect   
         if (witConnectionState == CONNECTION_STATE_CONNECTED) {
           witConnectionState = CONNECTION_STATE_DISCONNECTED;
-          clearPreferences();
-          writePreferences();
+          // clearPreferences();
+          // writePreferences();
           preferencesRead = false;
           disconnectWitServer();
         } else {
@@ -2360,8 +2365,8 @@ void doMenuCommand(char menuItem) {
         break;
       }
     case MENU_ITEM_OFF_SLEEP: { // sleep/off
-        clearPreferences();
-        writePreferences();
+        // clearPreferences();
+        // writePreferences();
         deepSleepStart();
         break;
       }
