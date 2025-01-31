@@ -27,9 +27,6 @@ While the basic from is simple, the design is flexible and you can add several a
 
 [See a video of it in use here.](https://youtu.be/RKnhfBCP_SQ)
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/RKnhfBCP_SQ?si=Z_nlVT7RNRzxInaN" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-
-
 **The name**
 
 *WiTcontroller* is a contraction of 'WiThrottle Controller' as it uses the WiThrottle Protocol for communications with the server.  I pronounce it as 'Wit Controller', but you can pronounce it however you like.
@@ -81,14 +78,14 @@ While the basic from is simple, the design is flexible and you can add several a
 
 * Knob ([Example](https://www.jaycar.com.au/35mm-knob-matching-equipment-style/p/HK7766?pos=7&queryId=cbd19e2486968bca41273cc2dbce54a4&sort=relevance))
 
-* Wire - If you plan to solder the connections,which is the recommended approach, then stranded, coloured wire is advisable.  ([Example](https://www.jaycar.com.au/rainbow-cable-16-core-sold-per-metre/p/WM4516))
+* Wire - If you plan to solder the connections, which is the recommended approach, then stranded, coloured wire is advisable.  ([Example](https://www.jaycar.com.au/rainbow-cable-16-core-sold-per-metre/p/WM4516))
 
 ### Optional Components
 
 * *Optional:* A power switch. Push button or toggle. <br/> The battery in WiTcontroller will last a week or two in deep sleep, but you may wish to add a power switch on the positive feed of the battery if you expect to leave it unused for long periods.
 * *Optional:* You can use a 4x4 keypad instead of the 3x4 keypad. <br/> Note: You will need to make a small configuration change in ``config_buttons.h`` for this to work correctly.
-* *Optional:* Up to Eleven (11) additional push buttons can be added directly to the ESP32, each with their own independent commands. by([Example](https://www.jaycar.com.au/red-miniature-pushbutton-spst-momentary-action-125v-1a-rating/p/SP0710))
-* *Optional:* A 1.3" OLED Display 128x64 can be used instead of the 0.96" OLED Display 128x64 ([Example](https://www.aliexpress.com/item/32683094040.html?spm=a2g0o.order_list.order_list_main.110.25621802jRBB7y)) Note: You will need to make a small configuration change for this to work correctly.
+* *Optional:* Up to Eleven (11) additional push buttons can be added directly to the ESP32, each with their own independent commands. ([Example](https://www.jaycar.com.au/red-miniature-pushbutton-spst-momentary-action-125v-1a-rating/p/SP0710))
+* *Optional:* A 1.3" OLED Display 128x64 can be used instead of the 0.96" OLED Display 128x64 ([Example](https://www.aliexpress.com/item/32683094040.html?spm=a2g0o.order_list.order_list_main.110.25621802jRBB7y)) Note: You will need to make a minor change in the config file for this to work correctly.
 
 ### Pinouts
 
@@ -168,9 +165,10 @@ VN  39                                  AB10*
  C2 PIN 2                      R0 PIN 19
  R2 PIN 17                     R1 PIN 18
  R1 PIN 18                     R2 PIN 17
+                               R3 PIN 16
 
-Note: 
-Different keypads often arrange the pins on the base of the keypad differently.  So it is important make sure the pins on the keypad are correctly identified and adjusted as needed.
+Note:
+Different keypad manufacturers often arrange the pins on the base of the keypad differently.  So it is important to make sure the pins on the keypad are correctly identified and adjusted as needed.
 
  ```
 
