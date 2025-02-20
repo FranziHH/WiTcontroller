@@ -25,11 +25,11 @@ While the basic from is simple, the design is flexible and you can add several a
 
 [See a video of it in use here.](https://youtu.be/RKnhfBCP_SQ)
 
-Please note: I no longer contactable via the DCC-EX Discord server.
+Please note: I am no longer contactable via the DCC-EX Discord server.
 
 **The name**
 
-*WiTcontroller* is a contraction of 'WiThrottle Controller' as it uses the WiThrottle Protocol for communications with the server.  I pronounce it as 'Wit Controller', but you can pronounce it however you like.
+*WiTcontroller* is a contraction of 'WiThrottle Controller' as it uses the WiThrottle Protocol for communications with the server.  I pronounce it as 'Wit Controller', but you can pronounce it however you like.😊
 
 **Notes:**
 
@@ -70,7 +70,7 @@ Please note: I no longer contactable via the DCC-EX Discord server.
 
 * Polymer Lithium Ion Battery LiPo 400mAh (or greater) 3.7V 502535 JST Connector (or larger capacity) ([500mAh Example](https://www.ebay.com.au/itm/133708965793?hash=item1f21ace7a1:g:tlwAAOSwfORgYqYK))
 
-* KY-040 Rotary Encoder Module ([Example](https://www.aliexpress.com/item/1005003946689694.html?albagn=888888&&src=google&albch=search&acnt=479-062-3723&isdl=y&aff_short_key=UneMJZVf&albcp=21520181724&albag=168529973707&slnk=&trgt=dsa-1464330247393&plac=&crea=707854323770&netw=g&device=c&mtctp=&memo1=&albbt=Google_7_search&aff_platform=google&gad_source=1&gclid=Cj0KCQjwiOy1BhDCARIsADGvQnBPdlEVLYbYnLoOnN1p2bdjte0jYmInrgFD0WG16aF3GZtvrWTb6o0aAo8VEALw_wcB&gclsrc=aw.ds)) <br/> *Note: The EC11 rotary encoder will also work, but requires a small change configuration in ``config_buttons.h`` (see below)*
+* KY-040 Rotary Encoder Module ([Example](https://www.aliexpress.com/item/1005003946689694.html?albagn=888888&&src=google&albch=search&acnt=479-062-3723&isdl=y&aff_short_key=UneMJZVf&albcp=21520181724&albag=168529973707&slnk=&trgt=dsa-1464330247393&plac=&crea=707854323770&netw=g&device=c&mtctp=&memo1=&albbt=Google_7_search&aff_platform=google&gad_source=1&gclid=Cj0KCQjwiOy1BhDCARIsADGvQnBPdlEVLYbYnLoOnN1p2bdjte0jYmInrgFD0WG16aF3GZtvrWTb6o0aAo8VEALw_wcB&gclsrc=aw.ds)) <br/> *Note: The EC11 rotary encoder will also work, but requires a small configuration change in ``config_buttons.h`` (see below)*
 
 * OLED Display 0.96" 128x64 I2C IIC SSD1306 ([Example](https://www.ebay.com.au/itm/273746192621?ssPageName=STRK%3AMEBIDX%3AIT&_trksid=p2060353.m2749.l2649)) <br/> *Note: Some OLED displays up to 2.4 inch will also work (see below)*
 
@@ -84,27 +84,36 @@ Please note: I no longer contactable via the DCC-EX Discord server.
 
 * *Optional:* A power switch. Push button or toggle. <br/> The battery in WiTcontroller will last a week or two in deep sleep, but you may wish to add a power switch on the positive feed of the battery if you expect to leave it unused for long periods.
 * *Optional:* You can use a 4x4 keypad instead of the 3x4 keypad. <br/> Note: You will need to make a small configuration change in ``config_buttons.h`` for this to work correctly.
-* *Optional:* Up to Eleven (11) additional push buttons can be added directly to the ESP32, each with their own independent commands. ([Example](https://www.jaycar.com.au/red-miniature-pushbutton-spst-momentary-action-125v-1a-rating/p/SP0710))
-* *Optional:* A 1.3" OLED Display 128x64 can be used instead of the 0.96" OLED Display 128x64 ([Example](https://www.aliexpress.com/item/32683094040.html?spm=a2g0o.order_list.order_list_main.110.25621802jRBB7y)) Note: You will need to make a minor change in the config file for this to work correctly.
+* *Optional:* Up to eleven (11) additional push buttons can be added directly to the ESP32, each with their own independent commands. ([Example](https://www.jaycar.com.au/red-miniature-pushbutton-spst-momentary-action-125v-1a-rating/p/SP0710))
+* *Optional:* A 1.3" or 2.4" OLED Display (128x64) can be used instead of the 0.96" OLED Display 128x64 ([Example](https://www.aliexpress.com/item/32683094040.html?spm=a2g0o.order_list.order_list_main.110.25621802jRBB7y)) Note: You will need to make a minor change in the config file for this to work correctly.
+* *Optional:* It is possible to use a Potentiometer instead of the Rotary Encoder.  The code supports it if you make the appropriate configuration changes in ``config_buttons.h``.   However this has had only limited testing. <br/> This is documented to some degree in ``config_buttons_example.h`` if you wish to try it.
 
 ### Pinouts
 
 *Standard Configuration Pinouts*  This is the simplest form of the WiTcontroller
-![Assembly diagram](WiTcontroller%20pinouts%20v0.1.png)
+![Assembly diagram](images/WiTcontroller%20-%20Basic.png)
 
 *Pinouts for Optional Additional Buttons*
-![Assembly diagram - Optional Additional Buttons](WiTcontroller%20-%20Optional%20Buttons%20-%20pinouts%20v0.1.png)
+![Assembly diagram - Optional Additional Buttons](images/WiTcontroller%20-%20Optional%20Buttons%20-%20no%20pullups.png)
+
+*Pinouts for Optional Additional Buttons - With Pullups*
+![Assembly diagram - Optional Additional Buttons - With Pullups](images/WiTcontroller%20-%203x4%20keypad,%20Optional%20Buttons%20-%20pullups.png)
 
 *Pinouts for Optional 4x4 keypad and Additional Buttons - without pullup resistors*
-![Assembly diagram - 4x4 keypad and Optional Additional Buttons](WiTcontroller%20-%204x4%20keypad,%20Optional%20Buttons%20-%20pinouts%20v0.1.png)
-
-*Pinouts for Optional 4x4 keypad and Additional Buttons - with and without pullup resistors*
-![Assembly diagram - 4x4 keypad and Optional Additional Buttons](WiTcontroller%20-%204x4%20keypad,%20Optional%20Buttons%20-%20no%20pullups.png)
+![Assembly diagram - 4x4 keypad and Optional Additional Buttons](images/WiTcontroller%20-%204x4%20keypad,%20Optional%20Buttons%20-%20no%20pullups.png)
 
 *Pinouts for Optional Battery Monitor and Additional Buttons*
-![Assembly diagram - Optional Battery Monitor and Additional Buttons](WiTcontroller%20-%20Optional%20battery%20monitor.png)
+![Assembly diagram - Optional Battery Monitor and Additional Buttons](images/WiTcontroller%20-%20Optional%20battery%20monitor.png)
+
+---
 
 ### Default Pins
+
+*Default ESP32 and WiTcontroller pins*
+
+<details>
+
+<summary>Click to expand to see a table of the default pinouts</summary>
 
 ```
          3x4    4x4    OLED Encoder  Additional   Battery
@@ -152,9 +161,15 @@ VN  39                                  AB10*
 
 * Requires an external pullup resistor
 ```
+</details>
 
+<br />
 
 *Default Pins for the keypads*
+
+<details>
+
+<summary>Click to expand to see a table of the Default Pins for the keypads</summary>
 
 ```
 3x4 Keypad - Left to Right    4x4 keypad - Left to Right
@@ -171,17 +186,18 @@ Note:
 Different keypad manufacturers often arrange the pins on the base of the keypad differently.  So it is important to make sure the pins on the keypad are correctly identified and adjusted as needed.
 
  ```
+ 
+</details>
 
+---
 
 ### Case
 
 ![3D printer case 1](images/witcontroller1.jpg)
 
 ![3D printed case 2](images/witcontroller1.jpg)
+My case was 3D Printed for me by peteGSX (See the [Thingiverse.](https://www.thingiverse.com/thing:5440351) )
 
-Notes:
-
-* My case was 3D Printed for me by peteGSX (See the [Thingiverse.](https://www.thingiverse.com/thing:5440351) )
 * The 3x4 keypad petGSX designed the case for came from Jaycar and is slightly narrower than the one you see in the 'deconstructed' view in the video above.
 * The case requires about a dozen M2x4mm screws
 
@@ -189,13 +205,24 @@ Notes:
 
 ### Variations
 
-* *sumner* version... https://1fatgmc.com/RailRoad/DCC/WiTcontroller-Index.html
+![sumner version ](images/sumner_version.png)
+See [*sumner* version](https://1fatgmc.com/RailRoad/DCC/WiTcontroller-Index.html).
 
-  ![sumner version ](images/sumner_version.png)
+![syurev version](images/syurev_case.png)
+See [Thingiverse](https://www.thingiverse.com/thing:6541187).
 
-* *gingerangles* version with 2.4 inch screen...
+![Railsnail version](images/railsnail_case.png)
+See [RMweb](https://www.rmweb.co.uk/forums/topic/186297-project-a-witcontroller-wireless-throttle-to-control-my-dcc-ex-commandstation/).
 
-  ![gingerangles version with 2.4 inch screen](images/gingerangles_version.png)
+![kees version](images/kees_case.png)
+See [printables](https://www.printables.com/model/907658-dccexcontroller-witcontroller).
+
+![Unknown author](images/case_uknown.png)
+See [Thingiverse](https://makerworld.com/en/models/819825).
+
+![gingerangles version with 2.4 inch screen](images/gingerangles_version.png)
+*gingerangles* version with 2.4 inch screen...
+
 
 * For a very different take on what is possible by extending the design, have a look at: https://1fatgmc.com/RailRoad/DCC/HandCab-Index.html
 
@@ -204,9 +231,15 @@ Notes:
 
 ---
 
+<br/>
+
+---
+
 ## Loading the code
 
-The instructions below are for using the **Arduino IDE** and **GitHub Desktop**. **Visual Studio Code (VSC)** can be used instead of the Arduino IDE but no instructions are included here.
+The instructions below are for using the **Arduino IDE** and **GitHub Desktop**. 
+
+**Visual Studio Code (VSC)** can be used instead of the Arduino IDE, and is actually my preferred IDE, but no instructions are included here.
 
 1. Download the Arduino IDE.
     * Available from  https://support.arduino.cc/hc/en-us/articles/360019833020-Download-and-install-Arduino-IDE
@@ -220,19 +253,19 @@ The instructions below are for using the **Arduino IDE** and **GitHub Desktop**.
         * Search for "esp32" by Expressive Systems.  Install version 2.0.11 or later. (later versions should work, but go back to this 2.0.11 if you have problems.)
 
 3. Download or clone *this* repository. <br/> (Note: if you 'clone' initially, it is easier to receive updates to the code by doing a 'fetch' subsequently.  See Notes below.)
-    * Clone - **First Time**
+    * Option - Clone - **First Time**  ***Recommended***
        * Install *GitHub Desktop* from https://desktop.github.com/
        * Create a free account on GitHub and authorise the app to allow it to connect top GitHub
        * Select *file* -> *Clone Repository* - or 'Clone an repository from the internet' from the welcome page then select the 'URL' tab
        * Enter *https://github.com/flash62au/WiTcontroller* as the URL
-       * Select a local folder to install it.  The default folder for the Arduino usually looks like "...username\Documents\Arduino\". (This is a good but not essential place to put it.)
+       * Select a local folder to install it.  The default folder for the Arduino usually looks like "...<username>\Documents\Arduino\". (This is a good but not essential place to put it.)
        * Click *Clone*
        * **Subsequently**  (Anytime after the first 'clone')
          * click *Fetch Origin* and any changes to the code will be bought down to you PC, but you config_buttons.h and config_network.h will not be touched.
-    * Download 
+    * Option - Download ***Not Recommended***
        * Open *https://github.com/flash62au/WiTcontroller*
        * Click the green "Code" button and select download zip
-       * Extract the zip file to a local folder.  The default folder for the Arduino usually looks like "...username\Documents\Arduino\". This is a good, but not essential, place to put it.
+       * Extract the zip file to a local folder.  The default folder for the Arduino usually looks like "...<username>\Documents\Arduino\". This is a good, but not essential, place to put it.
 
 4. Load the needed libraries to your PC. <br/> These *MUST BE* loaded from the *Library Manager* in the *Arduino IDE*. 
     * *U8g2lib.h* -  Search for "U8g2".   Install version 2.35.30 or later. <br/> (later versions should work, but go back to this 2.35.30 if you have problems.)
@@ -275,6 +308,10 @@ The instructions below are for using the **Arduino IDE** and **GitHub Desktop**.
 
 ### Version Notes
 
+<details>
+
+<summary>Click to expand</summary>
+
    * WiTcontroller version 1.83 includes a new way to add additional buttons. (see below) The old way will continue to work, but conversion to the new format is recommended. <br/> This change allows up to a total of 11 additional buttons, but some of the extra pins may be in use for the 4x4 keypad, the battery test, etc.
    * WiTcontroller version 1.82 or later requires WiThrottleProtocol version 1.1.26 or later.
    * WiTcontroller version 1.73 or later is recommended to use WiThrottleProtocol version 1.1.25 or later to address a bug in heartbeat send, but only seen with JMRI WiThrottle .
@@ -296,6 +333,12 @@ The instructions below are for using the **Arduino IDE** and **GitHub Desktop**.
    * Later versions of the libraries generally should work, but if you have difficulties use the versions listed above.
    * To get the WiTcontroller sketch I recommend using either the git command line, or the far more friendly 'GitHub Desktop' app.  See instructions above.
    * If you receive and error related to Python, and you are on MacOS 12 and above please edit the platform file, change from python to python3 as follows; preferences->user/path/arduino/packages/hardware/esp32/version/platform.txt and edit the line that looks as follows:tools.gen_esp32part.cmd=python3 "{runtime.platform.path}/tools/gen_esp32part.py"
+
+</details>
+
+<br/>
+
+---
 
 <br/>
 
@@ -763,6 +806,10 @@ If you plan to modify the code it is recommended that you create your own GitHub
 
 ## Change Log
 
+<details>
+
+<summary>Click to expand</summary>
+
 ### V1.87
 - support UTF8 fonts better
 - Italian Translations by Roberto B
@@ -955,3 +1002,5 @@ If you plan to modify the code it is recommended that you create your own GitHub
 
 ### prior 
 - various
+
+</details>
