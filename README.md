@@ -49,6 +49,7 @@ Please note: I am no longer contactable via the DCC-EX Discord server.
 * [Building](#building)
 * [Loading the Code](#loading-the-code)
 * [Using WiTController](#using-witcontroller)
+* [Options and Extras](#options-and-extras) <br/> <br/>
 * [Modifying the code](#modifying-the-code)
 * [Change Log](#change-log)
 
@@ -385,30 +386,31 @@ A "Throttle" can control only one train, which may be one loco, or more than one
 ## Features
 
 **Currently functioning:**
+WiTcontroller:
 - Provides a list of discovered SSIDs with the ability to choose one. When you select one:
   - If it is one in your specified list (in the sketch), it will use that specified password 
-  - If it is a DCC++EX WiFi Command Station in access Point mode, it will guess the password
+  - If it is a DCC-EX EX-CommandStation in Access Point (AP) mode, it will guess the password
   - Otherwise it will ask to enter the password (Use the rotary encoder to choose each character and the encoder button to select it.  * = backspace.  # = enter the password.) 
 - Optionally provides a list of SSIDs with the specified passwords (in the sketch) to choose from
 - Auto-connects to the first found WiThrottle Protocol Server if only one found, otherwise 
   - Asks which to connect to
   - If none found will ask to enter the IP Address and Port
-  - Guesses the WiThrottle IP address and Port for DCC++EX WiFi Access Point mode Command Stations
-  - Optionally can add a #define (a preference) to disable this auto connect feature
-- Rudimentary on-the-fly consists
-- Assign commands directly to the 1-9 buttons (in the sketch) (see list below)
+  - Guesses the WiThrottle IP address and Port for DCC-EX EX-CommandStations in Access Point (AP) mode
+  - Optionally you can add a #define (a preference) to disable this auto connect feature
+- Allows On-the-fly consists/MUs
+  Allos assigning commands directly to the 1-9 buttons (in the sketch) (see list below)
   - This is done in config_button.h
   - Latching / non-latching for the function is provided by the roster entry of WiThrottle server
-- Optionally use a potentiometer (pot) instead of the rotary encoder
+- Optionally uses a potentiometer (pot) instead of the rotary encoder
 - Optional ability to assign commands directly to the 1-11 additional buttons (in the sketch) (see list below)
   - These are defined config_button.h
-- Command menu (see below for full list) including:
+- Provides a command **Menu** (see below for full list) including:
   - Able to select and deselect locos:
     - by their DCC address, via the keypad
       - On NCE systems, a leading zero (0) will force a long address
-    - from the first 50 locos in the roster
+    - from the first 50 locos in the roster (can be increased)
   - Able to select multiple locos to create a consist
-    - Able to change the facing of the additional locos in the consists (via the 'extra' menu after selection)
+    - Able to change the facing of the additional locos in the consists/MUs (via the 'extra' menu after selection)
   - Able to activate any function (0-31)
     - Showing of the roster function labels (from the WiThrottle server if provided)
     - Quick access to the functions by pressing #. Temporarily enabled via the Extras menu (or permanently enabled in config_button.h)
@@ -528,7 +530,7 @@ mmmmmmmmm
 * LLLL = Currently acquire loco(s) on this throttle
 * SSSS = Speed of current throttle (0-126)
 * DDDD = Direction of current throttle (Fwd,Rev)
-* f    = state of each function of 30 functions (number displays if the function is active)<br /><br />
+* f    = State of each of the 32 functions (number displays if the function is active)<br /><br />
 * llll = First Loco on *next* available throttle
 * d    = Direction of next next available throttle (<,>)
 * sss  = Speed of next available throttle (0-126)<br /><br />
@@ -728,7 +730,8 @@ If the battery does not show 100% when plugged into the charger, you may need to
 
 ``#define BATTERY_CONVERSION_FACTOR 1.7``
 
-    To help work out the correct BATTERY_CONVERSION_FACTOR, you can enable so serial monitor message that will assist.
+    To help work out the correct BATTERY_CONVERSION_FACTOR, 
+    you can enable so serial monitor message that will assist.
 
     In your ``config_buttons.h`` add (or uncomment) these defines:
     
@@ -744,16 +747,19 @@ If the battery does not show 100% when plugged into the charger, you may need to
       BATTERY If Battery full, BATTERY_CONVERSION_FACTOR should be: 1.69 (10014)
 
     Let it run for a while.
-    d) Note one of the recommend values (it will vary a bit) and enter it into the define in your config_buttons.h
+    d) Note one of the recommend values (it will vary a bit) and enter 
+       it into the define in your config_buttons.h
     e) Re-upload code and connect to a server
     f) Confirm that the battery reads 100% (repeat if not)
-    g) Run the WiTcontroller on battery for few hours and confirm the battery level is droping at an expected rate. (adjust the conversion factor if not.)
+    g) Run the WiTcontroller on battery for few hours and confirm the 
+       battery level is droping at an expected rate. (adjust the 
+       conversion factor if not.)
 
 *To show the calculated percentage*, set the following to ``true`` The default is ``false``.
 
 ``#define USE_BATTERY_PERCENT_AS_WELL_AS_ICON true``
 
-*To force the HandCab to go to sleep at a specific level*, set this value. (e.g. to 3 or 5.) A value of less than zero (e.g. -1) will disable the feature. By default it is disabled (-1).
+*To force the WiThrottle to go to sleep at a specific level*, set this value. (e.g. to 3 or 5.) A value of less than zero (e.g. -1) will disable the feature. By default it is disabled (-1).
 
 ``#define USE_BATTERY_SLEEP_AT_PERCENT 3``
 
