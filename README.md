@@ -23,7 +23,7 @@ In its basic form, the WiTcontroller uses only four components plus a battery.  
 
 While the basic from is simple, the design is flexible and you can add several additional components if you wish.
 
-![Original/Basic Version ](images/petegsx_version.png)
+<img src="images/petegsx_version.png" width="250"></img>
 
 [See a video of it in use here.](https://youtu.be/RKnhfBCP_SQ)  
 [and another...](https://www.youtube.com/watch?v=1w7H2OvP8Jg) (from GingeAngles)
@@ -224,6 +224,8 @@ VN  39                                  AB10*
  R1 PIN 18                     R2 PIN 17
                                R3 PIN 16
 
+Cx = Column x      Rx = Row x
+
 Note:
 Different keypad manufacturers may arrange the pins on the 
 base of the keypad differently to those listed above.  
@@ -266,12 +268,19 @@ Unknown author. See [Thingiverse](https://makerworld.com/en/models/819825).
 
 <img src="images/gingerangles_version.png" width="300;"></img> <br/>
 *gingerangles* version with 2.4 inch screen...
+gingerangels can be contacted on the DCC-EX Discord server.
+[Discord Invite](https://discord.gg/8ghsjsBup8) - 
+[specific message](https://discord.com/channels/713189617066836079/735156882511102033/1316646832297742380)
 
 <img src="images/rdbnogueira_version.png" width="300;"></img> <br/> 
 rdbnogueira version. See [Thingiverse](https://www.thingiverse.com/thing:6956982)
 
 <img src="https://github.com/dvirgo62/Printed-case-for-witcontroller/blob/main/PXL_20250910_022436424.jpg?raw=true" width="300;"></img> <br/>
-David Virgo's version using the EC11 encode. See [GitHub](https://github.com/dvirgo62/Printed-case-for-witcontroller?fbclid=IwY2xjawMyNLNleHRuA2FlbQIxMABicmlkETFTZ3RWbmRYck9MRENISVczAR7I770O70-brr0UWQ1O463MGa91Kf7WoZwbx85NPC72q69bG04gduhkIRDuFg_aem_znuhLVk6PxQxmlZntuLdAA)
+David Virgo's version using the EC11 encoder. See [GitHub](https://github.com/dvirgo62/Printed-case-for-witcontroller?fbclid=IwY2xjawMyNLNleHRuA2FlbQIxMABicmlkETFTZ3RWbmRYck9MRENISVczAR7I770O70-brr0UWQ1O463MGa91Kf7WoZwbx85NPC72q69bG04gduhkIRDuFg_aem_znuhLVk6PxQxmlZntuLdAA)
+
+<img src="images/markwtech_case.jpg" width="300;"></img> <br/> 
+markwtech version. See [Thingiverse](https://www.thingiverse.com/thing:7029069)
+
 
 ---
 
