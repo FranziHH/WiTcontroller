@@ -1,4 +1,4 @@
-const String appVersion = "v1.94";
+const String appVersion = "v1.95";
 #ifndef CUSTOM_APPNAME
    const String appName = "WiTcontroller";
 #else
@@ -301,6 +301,9 @@ const int glyph_speed_step = 0x00d6;
 #ifndef MENU_ITEM_TEXT_TITLE_EDIT_CONSIST
    #define MENU_ITEM_TEXT_TITLE_EDIT_CONSIST           "Edit Consist Facing"
 #endif
+#ifndef MENU_TEXT_TITLE_TBA
+   #define MENU_TEXT_TITLE_TBA                         "" 
+#endif
 
 #ifndef MENU_ITEM_TEXT_MENU_FUNCTION
    #define MENU_ITEM_TEXT_MENU_FUNCTION               "no+# Select   * Cancel  # List"
@@ -347,7 +350,6 @@ const int glyph_speed_step = 0x00d6;
    #define MENU_ITEM_TEXT_MENU_EDIT_CONSIST           "no Chng Facing   * Close"
 #endif
 #define MENU_ITEM_TEXT_MENU_NA                     ""   // for items that don't require showing a menu
-
 
 #ifndef EXTRA_MENU_TEXT_CHAR_FUNCTION_KEY_TOGGLE
    #define EXTRA_MENU_TEXT_CHAR_FUNCTION_KEY_TOGGLE    "Fnc/Key Tgl"
@@ -1025,6 +1027,13 @@ const char ssidPasswordBlankChar = 164;
   #define ESPMDNS_IP_ATTRIBUTE_NAME MDNS.IP(i)
 #else
   #define ESPMDNS_IP_ATTRIBUTE_NAME MDNS.address(i)
+#endif
+
+// ***************************************************
+// mDNS wait time 
+
+#ifndef MDNS_WAIT_TIME
+   #define MDNS_WAIT_TIME 10000
 #endif
 
 // ***************************************************

@@ -107,7 +107,9 @@ While the basic form is simple, the design is flexible and you can add several a
 
     *Note: Any capacity will work, but 400mAh will give about 6 hours of run time.*
     
-    ***WARNING: I have found that some batteries come with the positive and negative leads the other way around to the terminals on the ESP32.*** <br/> **Check they are correct before plugging it in.** <br/> The polarity of the battery is easy to swap, by getting a knife blade under the small tabs on the plastic connector and pulling each male socket out. <br/> Take extreme care. ***DO NOT SHORT THE TERMINALS.*** 
+    **WARNING:**
+
+    ***I have found that some batteries come with the positive and negative leads the other way around to the terminals on the ESP32.*** <br/> **Check they are correct before plugging it in.** <br/> The polarity of the battery is easy to swap, by getting a knife blade under the small tabs on the plastic connector and pulling each male socket out. <br/> Take extreme care. ***DO NOT SHORT THE TERMINALS.*** 
 
 6. A Case to put it in. Links to a few different designs are below, but any box will do. My case was 3d printed for me (see below).
 
@@ -144,8 +146,10 @@ While the basic form is simple, the design is flexible and you can add several a
 *Pinouts for Optional Battery Monitor and Additional Buttons*
 ![Assembly diagram - Optional Battery Monitor and Additional Buttons](images/WiTcontroller%20-%20Optional%20battery%20monitor.png)
 
-***Warning: Different keypad manufacturers may arrange the pins on the 
-base of the keypad differently.*** See notes in the [Default Pins for the keypads](#default-pins-for-the-keypads)  section below.
+**WARNING:**
+    
+***Different keypad manufacturers may arrange the pins on the 
+base of the keypad differently to the examples above.*** See notes in the [Default Pins for the keypads](#default-pins-for-the-keypads)  section below.
 
 ---
 
@@ -226,7 +230,7 @@ VN  39                                  AB10*
 
 Cx = Column x      Rx = Row x
 
-Note:
+WARNING:
 Different keypad manufacturers may arrange the pins on the 
 base of the keypad differently to those listed above.  
 So it is important to make sure the pins on the keypad are 
@@ -345,7 +349,7 @@ The instructions below are for using the **Arduino IDE** and **GitHub Desktop**.
       Notes: <br/> **DO NOT** download these libraries *directly*. Use the *Boards Manager*. <br/> **DO NOT** put them in the WiTcontroller folder. <br/> These libraries do not appear in your list of libraries, but will be available to use regardless. (The files are actually buried away in a subfolder of the ESP32 Boards library.)
 
 6. Copy the two example config files. <br/> You will need to use a *File Manger* type of app on the PC to do this.
-    * Copy ``config_network_example.h`` to a new file to ``config_network.h``. 
+    * Copy ``config_network_example.h`` to a new file ``config_network.h``. 
     * Copy ``config_buttons_example.h`` to a new file ``config_buttons.h``.
 
       Note: <br/> These new files are not included in the download, so that you can personalise your configuration without fear that those configurations will be overridden if you update (download again) the WiTcontoller code.
@@ -814,30 +818,29 @@ If the battery does not show 100% when plugged into the charger, you may need to
 
 ``#define BATTERY_CONVERSION_FACTOR 1.7``
 
-    To help work out the correct BATTERY_CONVERSION_FACTOR, 
-    you can enable so serial monitor message that will assist.
+  To help work out the correct BATTERY_CONVERSION_FACTOR, 
+  you can enable so serial monitor message that will assist.
 
-    In your ``config_buttons.h`` add (or uncomment -remove the ``//``) these defines:
-    
-      #define WITCONTROLLER_DEBUG    0
+  In your ``config_buttons.h`` add (or uncomment -remove the ``//``) this define:
+  
+    #define WITCONTROLLER_DEBUG    0
 
-    a) Make sure your battery is fully charged.
-    b) Upload the code and open the serial monitor. 
-    c) Wait. Don't connect.
-    You will see lines like...
+  a) **Make sure your battery is fully charged** first! <br/>
+  b) Upload the code WiTcontroller code if you have not already done so.  <br/>
+  c) Open the serial monitor.  <br/>
+  d) Wait. (Don't connect to a WiThrottle server.) <br/>
+  You will see lines like...
 
-      BATTERY TestValue: 100 (10003)
-      BATTERY lastAnalogReadValue: 2491 (10003)
-      BATTERY If Battery full, BATTERY_CONVERSION_FACTOR should be: 1.69 (10014)
+    BATTERY TestValue: 100 (10003)
+    BATTERY lastAnalogReadValue: 2491 (10003)
+    BATTERY If Battery full, BATTERY_CONVERSION_FACTOR should be: 1.69 (10014)
 
-    Let it run for a while.
-    d) Note one of the recommended values (it will vary a bit) and enter 
-       it into the define in your config_buttons.h
-    e) Re-upload code and connect to a server
-    f) Confirm that the battery reads 100% (repeat if not)
-    g) Run the WiTcontroller on battery for few hours and confirm the 
-       battery level is droping at an expected rate. 
-       (adjust the conversion factor if not.)
+  Let it run for a while. <br/>
+  e) Note one of the recommended values (it will vary a bit) and enter it into the define in your ``config_buttons.h`` <br/>
+  f) Re-upload code and connect to a server <br/>
+  g) Confirm that the battery reads 100% (repeat if not) <br/>
+  h) Run the WiTcontroller on battery for few hours and confirm the battery level is droping at an expected rate.  <br/>
+      (adjust the conversion factor if not.)
 
 *To show the calculated percentage*, set the following to ``true`` The default is ``false``.
 
