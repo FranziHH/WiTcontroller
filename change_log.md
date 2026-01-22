@@ -1,6 +1,18 @@
 # Change Log
+### V1.98
+- The SSID scan will no longer sort by default
+- Addition of two defines for the SSID scan ``SORT_WIFI_NETWORKS`` and ``USE_FAST_WIFI_SCAN_METHOD``
+  - Use ``#define SORT_WIFI_NETWORKS true`` to sort the SSIDs
+  - Use ``#define USE_FAST_WIFI_SCAN_METHOD true`` to use a faster scanning method
+- Now disconects the WiFi as a precaution on startup
+- Fixed a bug with use of the WiFi country codes
+- Realised that ``#define ENFORCED_COUNTRY_CODE true`` is not actualyl used byt the code.  I will look into that later
+
+### V1.97
+- Additional logging
+
 ### V1.96
-- changed the default for ``USE_BATTERY_SLEEP_AT_PERCENT`` to ``#define USE_BATTERY_SLEEP_AT_PERCENT 0``.  This turns the automatic sleep on low battery off by default.
+- Changed the default for ``USE_BATTERY_SLEEP_AT_PERCENT`` to ``#define USE_BATTERY_SLEEP_AT_PERCENT 0``.  This turns the automatic sleep on low battery off by default.
 
 ### V1.95
 - Added MDNS_WAIT_TIME define

@@ -317,7 +317,7 @@ The instructions below are for using the **Arduino IDE** and **GitHub Desktop**.
         * Enter the following into the 'Additional Board Manager URLs' field:  https://dl.espressif.com/dl/package_esp32_index.json
     * Then Use the *Boards Manager* in the *Arduino IDE* to install the esp32 board support
         * *Tools* > *Board* > *Boards Manager*
-        * Search for "esp32" by Expressive Systems.  Install version 2.0.11 or later. (Later versions work, but go back to this 2.0.11 if you have problems.) Version 3.2.0 is recommended, and required if you need to use 2.4gHz WiFi channels greater than 10. See notes below.
+        * Search for "esp32" by Expressive Systems.  Install version 3.2.0 or later. Version 3.3.0 is recommended.  (Later versions work, but go back to this 3.2.0 if you have problems.) (Eralier versions work, but 3.2.0 or later is required if you want to use 2.4gHz WiFi channels greater than 10. See notes below. )
 
 3. Download or clone *this* repository. <br/> (Note: if you 'clone' initially, it is easier to receive updates to the code by doing a 'fetch' subsequently.  See Notes below.)
     * Option - Clone - **First Time**  ***Recommended***
@@ -883,6 +883,20 @@ Note: Selecting from the roster/turnouts etc. is not possible as the commands wi
 ``#define ACQUIRE_ROSTER_ENTRY_IF_ONLY_ONE true``
 
 Enabling this option will automatically acquire the only roster entry after connection to the WiThrottle Server, but only if there is ***only one*** roster entry. 
+
+<hr style="height: 1px;">
+
+### WiFi Scanning options
+
+``#define USE_FAST_WIFI_SCAN_METHOD true``
+
+To do a Fast Scan for SSIDs, uncomment or add the line above in your ``config_network.h``.  Fast scans are not as through. 
+
+``#define SORT_WIFI_NETWORKS true``
+
+The 'found' SSIDs will not be sorted by default (from version v1.98). To restore this feature, uncomment or add the line above in your ``config_network.h``.  If enabled, the SSIDs are sorted by signal strength.
+
+Note: sorting can't be used if the Fast Scan is enabled.
 
 <hr style="height: 1px;">
 
