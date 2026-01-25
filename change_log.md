@@ -1,4 +1,14 @@
 # Change Log
+### V1.103
+- Option to bypass the initial WiFi scan ``#define BYPASS_WIFI_SCAN_ON_STARTUP true``
+### V1.102
+- Included a 15 second timeout for the new SSID scan
+### V1.101
+- If the SSID scan fails, it lets you choose from the list in the config_network.h 
+### V1.100
+- Changed the SSID scan to a non-blocking approach 
+### V1.99
+- removed some of the code added in the previous version as it was not proving to be helpful.
 ### V1.98
 - The SSID scan will no longer sort by default
 - Addition of two defines for the SSID scan ``SORT_WIFI_NETWORKS`` and ``USE_FAST_WIFI_SCAN_METHOD``

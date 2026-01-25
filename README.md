@@ -87,6 +87,10 @@ While the basic form is simple, the design is flexible and you can add several a
 
     *Note: any ESP32 will work but the pinouts may need to be adjusted, and a separate LiPo charger may be required*
 
+    <span style="color:red;">**WARNING:**</span> 
+    
+    I have reports of some of the versions of this board with the USB-C connectors having problems with the WiFi.  Some are clearly fine, but others are not. </br> I am still investigating this, but I would recommend avoiding the USB-C version for now.
+
 2. 3x4 Keypad  ([Example](https://www.jaycar.com.au/12-key-numeric-keypad/p/SP0770?pos=2&queryId=20aedf107668ad42c6fe1f8b7f7a9ca7)) 
 
     *Note: Alternately a 4x4 keypad can also be used (see optional components below)* 
@@ -107,7 +111,7 @@ While the basic form is simple, the design is flexible and you can add several a
 
     *Note: Any capacity will work, but 400mAh will give about 6 hours of run time.*
     
-    **WARNING:**
+    <span style="color:red;">**WARNING:**</span>
 
     ***I have found that some batteries come with the positive and negative leads the other way around to the terminals on the ESP32.*** <br/> **Check they are correct before plugging it in.** <br/> The polarity of the battery is easy to swap, by getting a knife blade under the small tabs on the plastic connector and pulling each male socket out. <br/> Take extreme care. ***DO NOT SHORT THE TERMINALS.*** 
 
@@ -850,7 +854,7 @@ If the battery does not show 100% when plugged into the charger, you may need to
 
 ``#define USE_BATTERY_SLEEP_AT_PERCENT 3``
 
-The display of the battery can be temporarily toggled by setting a key or button to ``SHOW_HIDE_BATTERY``.  The display will cycle between none, icon only and icon plus percent value. Note that ``USE_BATTERY_TEST`` must be set to `true` for this to have any effect.
+The display of the battery can be temporarily toggled by setting a key or button to ``SHOW_HIDE_BATTERY``.  The display will cycle between none, icon only and icon plus percent value. Note that ``USE_BATTERY_TEST`` must be set to `true` for this to have any effect. By default it is disabled (0).
 
 Note: 
 I recommend adding a physical power switch to disconnect the battery as this feature will, slowly, continually drain the battery, even when not being used.
@@ -890,13 +894,19 @@ Enabling this option will automatically acquire the only roster entry after conn
 
 ``#define USE_FAST_WIFI_SCAN_METHOD true``
 
-To do a Fast Scan for SSIDs, uncomment or add the line above in your ``config_network.h``.  Fast scans are not as through. 
+To do a Fast Scan for SSIDs, uncomment or add the line above in your ``config_network.h``.  Fast scans are not as through. By default this option is disbled.
 
 ``#define SORT_WIFI_NETWORKS true``
 
-The 'found' SSIDs will not be sorted by default (from version v1.98). To restore this feature, uncomment or add the line above in your ``config_network.h``.  If enabled, the SSIDs are sorted by signal strength.
+The 'found' SSIDs will not be sorted by default (from version v1.98). To restore this feature, uncomment or add the line above in your ``config_network.h``.  If enabled, the SSIDs are sorted by signal strength. By default this option is disbled.
 
 Note: sorting can't be used if the Fast Scan is enabled.
+
+``#define BYPASS_WIFI_SCAN_ON_STARTUP true``
+
+This option to allows you to bypass the initial WiFi scan.  The WiTcontroller will instead show you the list of SSIDs you have defined in ``config_network.h``.  From that you can still to the scan if you wish by pressing ``#``.  By default this option is disbled and the network will be scanned at startup.
+
+Note: Some ESP32s seem to have an intermitient WiFi problem that causes the WifI Scan to lockup the device.  This option may be may be useful in this situation.
 
 <hr style="height: 1px;">
 

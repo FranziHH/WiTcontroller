@@ -603,35 +603,49 @@ void browseSsids() { // show the found SSIDs
   writeOledBattery();
   writeOledArray(false, false, true, true);
 
-  debug_println("Setting Scan Method");
+  debug_print("Setting Scan Method");
   #ifdef USE_FAST_WIFI_SCAN_METHOD
+    debug_println("- Fast Scan Method");
     WiFi.setScanMethod(WIFI_FAST_SCAN);
   #else
+    debug_println("- All Scan Method");
     WiFi.setScanMethod(WIFI_ALL_CHANNEL_SCAN);
 
-    #ifndef SORT_WIFI_NETWORKS
-      debug_println("Setting Sort Method");
+    #ifdef SORT_WIFI_NETWORKS
+      debug_println("Setting Sort Method - By Signal");
       WiFi.setSortMethod(WIFI_CONNECT_AP_BY_SIGNAL);
     #endif
   #endif
   
   debug_println("Starting Scan");
-  int numSsids = WiFi.scanNetworks();
+  WiFi.scanNetworks(true);
 
-  debug_println("Processing Scan Results");
-  while ( (numSsids == -1)
-    && ((nowTime-startTime) <= 10000) ) { // try for 10 seconds
+  debug_println("Waiting for Scan Results");
+  int numSsids = -1;
+  int j=0;
+  while ( (numSsids < 0)  && ((nowTime-startTime) <= 15000) ) { // wait up to 15 seconds
+    numSsids = WiFi.scanComplete();
+    // debug_print(" ");debug_print(numSsids);debug_print(" ");
     delay(250);
-    debug_print(".");
     nowTime = millis();
+    j++;
+    oledText[3] = getDots(j);
+    writeOledArray(false, false, true, true);
+    debug_print(".");
   }
+  debug_println("Scan Complete");
 
   startWaitForSelection = millis();
 
   foundSsidsCount = 0;
-  if (numSsids == -1) {
-    debug_println("Couldn't get a wifi connection");
-
+  if (numSsids < 0) {  // -2
+    // debug_println(" ");debug_print(numSsids);debug_print(" ");
+    debug_println("Scan failed or no SSIDs found");
+    ssidSelectionSource = SSID_CONNECTION_SOURCE_LIST;
+    
+    oledText[3] = MSG_NO_SSIDS_FOUND;
+    writeOledArray(false, false, true, true);
+    delay(2000);
   } else {
     for (int thisSsid = 0; thisSsid < numSsids; thisSsid++) {
       /// remove duplicates (repeaters and mesh networks)
@@ -1643,21 +1657,29 @@ void additionalButtonLoop() {
 
 void setup() {
   Serial.begin(115200);
+  debug_println("Starting WiTcontroller"); 
+  debug_print("WiTcontroller - Version: "); debug_println(appVersion);
+
+  debug_println("WiFi Start"); 
+  WiFi.mode(WIFI_STA);
+  WiFi.disconnect();
+  delay(1000);
+
+  debug_println("u8g2 Start"); 
   // u8g2.setI2CAddress(0x3C * 2);
   // u8g2.setBusClock(100000);
   u8g2.begin();
   u8g2.firstPage();
-
   delay(1000);
-  debug_println("Start"); 
-  debug_print("WiTcontroller - Version: "); debug_println(appVersion);
 
+  debug_println("Battery Start"); 
   batteryTest_loop();  // do the battery check once to start
 
   clearOledArray(); oledText[0] = appName; oledText[6] = appVersion; oledText[2] = MSG_START;
   writeOledBattery();
   writeOledArray(false, false, true, true);
 
+  debug_println("Encoder Start"); 
   rotaryEncoder.begin();  //initialize rotary encoder
   rotaryEncoder.setup(readEncoderISR);
   //set boundaries and if values should cycle or not 
@@ -1672,16 +1694,23 @@ void setup() {
     pinMode(ROTARY_ENCODER_B_PIN, INPUT_PULLUP);
   }
 
+  debug_println("Event Listener Start"); 
   keypad.addEventListener(keypadEvent); // Add an event listener for this keypad
   keypad.setDebounceTime(KEYPAD_DEBOUNCE_TIME);
   keypad.setHoldTime(KEYPAD_HOLD_TIME);
 
+  debug_println("Sleep Enable Start"); 
   esp_sleep_enable_ext0_wakeup(GPIO_NUM_13,0); //1 = High, 0 = Low
 
   keypadUseType = KEYPAD_USE_SELECT_SSID;
   encoderUseType = ENCODER_USE_OPERATION;
-  ssidSelectionSource = SSID_CONNECTION_SOURCE_BROWSE;
+  #ifndef BYPASS_WIFI_SCAN_ON_STARTUP
+    ssidSelectionSource = SSID_CONNECTION_SOURCE_BROWSE;
+  #else 
+    ssidSelectionSource = SSID_CONNECTION_SOURCE_LIST;
+  #endif
 
+  debug_println("Additional Buttons Start"); 
   initialiseAdditionalButtons();
 
   resetAllFunctionLabels();
@@ -1692,14 +1721,14 @@ void setup() {
     currentDirection[i] = Forward;
     currentSpeedStep[i] = speedStep;
   }
-  
-  WiFi.mode(WIFI_STA);
-  WiFi.disconnect();
-  delay(100);
+
+  debug_println("Host Name and Country Start"); 
   WiFi.setHostname(DEVICE_NAME);
   #if USE_WIFI_COUNTRY_CODE
     esp_wifi_set_country_code(COUNTRY_CODE, false);
   #endif
+
+  debug_println("Start complete"); 
 }
 
 void loop() {
