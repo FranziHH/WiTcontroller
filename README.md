@@ -681,7 +681,7 @@ To change the configuration so that rotating the encoder clockwise increases spe
 ### Direction of rotation of the encoder when the Loco is reversed
 
 By default, when the loco is reversed, to increase the speed of the loco you need to rotate the encoder in the same direction as when the loco direction is forward.  (See the previous heading.)
-If you wish to increase speed by rotating the encoder in the oposite direction when the direction is reverse' you can add the following define.  Uncomment (remove the ``//``) following line in your ``config_buttons.h``.
+If you wish to increase speed by rotating the encoder in the opposite direction when the direction is reversed you can add the following define.  Uncomment (remove the ``//``) following line in your ``config_buttons.h``.
 
 ``#define ENCODER_INVERT_ROTATION_WHEN_REVERSED                     true``
 
@@ -942,6 +942,31 @@ Si può sovrascrivere una qualunque di queste traduzioni individualmente aggiung
 
 Qualunque contributo è gradito.
 Per ogni questione, il contatto ufficiale è il canale Discord di DCC-EX nella sezione wifi-throttles.
+
+<hr style="height: 1px;">
+
+### Instructions for Chinese Translations - ###中文翻译说明
+
+The file [language_chinese.h] contains Chinese translations (by Lin Huiyu).  
+
+To see menus and messages in Chinese:
+
+* Uncomment (or add) the ``#include "language_chinese.h"`` line in ``config_buttons.h``.
+* Uncomment (or add) the ``#define FONT_DEFAULT u8g2_font_boutique_bitmap_7x7_t_gb2312`` line in ``config_buttons.h``.
+* Uncomment (or add) the ``#define FONT_DIRECTION u8g2_font_wqy13_t_gb2312a`` line in ``config_buttons.h``.
+
+You can override any of these translations individually by adding an appropriate ``#define`` statement in the ``config_buttons.h``, but it *must* be *before* the ``#include...`` statement.
+
+
+文件 [language_chinese.h] 包含的中文翻译内容，由林辉玉完成。
+
+如需显示中文菜单与信息，请按以下步骤操作：
+
+* 在 ``config_buttons.h`` 文件中，取消注释（或添加）此行：``#include "language_chinese.h"``。
+* 在 ``config_buttons.h`` 文件中，取消注释（或添加）此行：``#define FONT_DEFAULT u8g2_font_boutique_bitmap_7x7_t_gb2312``。
+* 在 ``config_buttons.h`` 文件中，取消注释（或添加）此行：``#define FONT_DIRECTION u8g2_font_wqy13_t_gb2312a``。
+
+您可以在 ``config_buttons.h`` 文件中通过添加相应的 ``#define`` 预编译宏定义来个别覆盖这些翻译，但该定义必须出现于 ``#include...`` 语句之前。
 
 <hr style="height: 1px;">
 
