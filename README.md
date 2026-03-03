@@ -372,6 +372,7 @@ The instructions below are for using the **Arduino IDE** and **GitHub Desktop**.
     * Optionally, edit this to change the mapping of the keypad buttons to specific functions.
     * Optionally, edit this to configure the additional buttons (if you have included them) to specific functions.
     * Optionally, edit this to change if you want the function buttons to display when you press #, instead of the default of showing the Key Definitions
+    * Optionally, change the language/localisation. <br/> See the [Languages / localisation](#languages-and-localisation) section below.
 
 10. Upload the sketch.  
     * Select the board type as ``WEMOS LOLIN32 Lite`` in the *Arduino IDE*.
@@ -435,7 +436,7 @@ A "Throttle" can control only one train, which may be one loco, or more than one
 WiTcontroller:
 - Provides a list of discovered SSIDs with the ability to choose one. When you select one:
   - If it is one in your specified list (in the sketch), it will use that specified password 
-  - If it is a DCC-EX EX-CommandStation in Access Point (AP) mode, it will guess the password
+  - If it is a DCC-EX EX-CommandStation in Access Point (AP) mode, it will try to guess the password. <br /> *Warning!* prior to version 1.108 It assumes the it will be the default password. If you have changed the password it will fail to connect unless you have the SSID *and correct password* listed in `config_network.h`.  <br /> From version 1.108 it will try to connect to a DCC-EX EX-CommandStation with the 'guessed' password on the first attempt.  Then, if it fails to connect, it will ask for the password on the second attempt.
   - Otherwise it will ask to enter the password (Use the rotary encoder to choose each character and the encoder button to select it.  * = backspace.  # = enter the password.) 
 - Optionally provides a list of SSIDs with the specified passwords (in the sketch) to choose from
 - Auto-connects to the first found WiThrottle Protocol Server if only one found, otherwise 
@@ -778,6 +779,11 @@ This is one of the common 1.3 inch OLED displays
 
 ``#define OLED_TYPE U8G2_SH1106_128X64_NONAME_F_HW_I2C u8g2(U8G2_R0, /* reset=*/ U8X8_PIN_NONE, /* clock=*/ 22, /* data=*/ 23);``
 
+This one works with the 2.42 inch SSD1309 based oLED from [Amazon](https://www.amazon.co.uk/dp/B0DLGD8HQH?ref_=ppx_hzsearch_conn_dt_b_fed_asin_title_4&th=1)
+
+``#define OLED_TYPE U8G2_SSD1309_128X64_NONAME2_F_HW_I2C u8g2(U8G2_R0, /* reset=*/ U8X8_PIN_NONE, /* clock=*/ 22, /* data=*/ 23);``
+
+
 See [config_buttons_example.h](config_buttons_example.h) for more information.
 
 <hr style="height: 1px;">
@@ -920,7 +926,9 @@ Note: Some ESP32s seem to have an intermitient WiFi problem that causes the WifI
 
 <hr style="height: 1px;">
 
-### Instructions for German Translations     Anleitung für deutsche Übersetzungen
+### Languages and localisation
+
+#### Instructions for German Translations - Anleitung für deutsche Übersetzungen
 
 The file [language_deutsch.h](language_deutsch.h) contains German translations (by Bastian Zechendorf).  Uncomment (or add) the ``#include "language_deutsch.h"`` line in ``config_buttons.h`` to see menus and messages in German.
 
@@ -935,7 +943,7 @@ Bei Interesse kontaktieren Sie mich bitte direkt für eine Anleitung.
 
 <hr style="height: 1px;">
 
-### Istruzioni per la traduzione in Italiano
+#### Instructions for Italian Translations - Istruzioni per la traduzione in Italiano
 
 Il file [language_italiano.h](language_italiano.h) contiene la traduzione italiana (by Roberto B). Rimuovere il commento o aggiungere la linea ``#include language_italiano.h`` nel file ``config_buttons.h`` per avere menù e messaggi in Italiano.
 
@@ -946,7 +954,7 @@ Per ogni questione, il contatto ufficiale è il canale Discord di DCC-EX nella s
 
 <hr style="height: 1px;">
 
-### Instructions for Dutch Translations - Instructies voor de Nederlandse vertalingen
+#### Instructions for Dutch Translations - Instructies voor de Nederlandse vertalingen
 
 Het bestand [language_nederlands.h](language_nederlands.h) bevat de Nederlandse vertalingen (door Hans Metselaar). Verwijder het commentaar voor de regel ``#include "language_nederlands.h"`` (of voeg deze toe) in ``config_buttons.h`` om de menu’s en meldingen in het Nederlands weer te geven.
 
@@ -954,7 +962,7 @@ Je kunt ieder van deze vertalingen individueel overschrijven door het desbetreff
 
 <hr style="height: 1px;">
 
-### Instructions for Chinese Translations - ###中文翻译说明
+#### Instructions for Chinese Translations - ###中文翻译说明
 
 The file [language_chinese.h] contains Chinese translations (by Lin Huiyu).  
 
@@ -979,7 +987,7 @@ You can override any of these translations individually by adding an appropriate
 
 <hr style="height: 1px;">
 
-### Instructions for Other Translations
+#### Instructions for Other Translations
 
 If you create a copy of the file ``language_deutsch.h`` (with a new name) and change the German text it contains to any language you wish (using the English text on the right as a guide to what is needed) you can add that file as an include in ``config_buttons.h``.
 
