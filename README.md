@@ -103,7 +103,6 @@ While the basic form is simple, the design is flexible and you can add several a
 
 4. **OLED Display** 0.96" 128x64 I2C IIC SSD1306 ([Example](https://www.ebay.com.au/itm/273746192621?ssPageName=STRK%3AMEBIDX%3AIT&_trksid=p2060353.m2749.l2649))
 
-
     Notes:
 
     * *The code for the one of the common 1.3" displays is also included (see below).*
@@ -116,8 +115,8 @@ While the basic form is simple, the design is flexible and you can add several a
 
     * Any capacity battery will work. A 400mAh will give about 6 hours of run time.*
     
-> [!WARNING]
-> *I have found that some batteries come with the positive and negative leads the other way around to the terminals on the ESP32.* <br/> Check they are correct before plugging it in. <br/> The polarity of the battery is easy to swap, by getting a knife blade under the small tabs on the plastic connector and pulling each male socket out. Take extreme care. **DO NOT SHORT THE TERMINALS.**
+> [!CAUTION]
+> *I have found that some batteries come with the positive and negative leads the other way around to the terminals on the ESP32.* **Check they are correct before plugging it in!** <br/> <br/> The polarity of the battery is easy to swap, by getting a knife blade under the small tabs on the plastic connector and pulling each male socket out. Take extreme care. **DO NOT SHORT THE TERMINALS.**
 
 6. **A Case to put it in**. Links to a few different designs are below, but any box will do. My case was 3d printed for me (see below).
 
@@ -135,7 +134,7 @@ While the basic form is simple, the design is flexible and you can add several a
 
 12. *Optional:* **A 1.3" or 2.4" OLED Display** (128x64) can be used instead of the 0.96" OLED Display 128x64 ([Example](https://www.aliexpress.com/item/32683094040.html?spm=a2g0o.order_list.order_list_main.110.25621802jRBB7y)) Note: You will need to make a minor change in the config file for this to work correctly.
 
-13. *Optional:* It is possible to use a **Potentiometer** instead of the Rotary Encoder for throttle control.  The code supports it if you make the appropriate configuration changes in ``config_buttons.h``.   However this has had only limited testing. <br/> This is documented to some degree in [config_buttons_example.h](config_buttons_example.h) if you wish to try it.
+13. *Optional:* Though not recommended, it is possible to use a **Potentiometer** instead of the Rotary Encoder for throttle control.  The code supports it if you make the appropriate configuration changes in ``config_buttons.h``.   However this has had only limited testing. <br/> This is documented to some degree in [config_buttons_example.h](config_buttons_example.h) if you wish to try it.
 
 ### Pinouts
 
@@ -264,32 +263,35 @@ My case was 3D Printed for me by peteGSX (See the [Thingiverse.](https://www.thi
 <img src="images/sumner_version.png" width="300;"></img> <br/>
 See [*sumner* version](https://1fatgmc.com/RailRoad/DCC/WiTcontroller-Index.html).
 
-<img src="images/syurev_case.png" width="300;"></img> <br/>
+<img src="images/syurev_case.png" height="300;"></img> <br/>
 syurev version. See [Thingiverse](https://www.thingiverse.com/thing:6541187) or [cults3d](https://cults3d.com/en/3d-model/gadget/case-for-dccexcontroller-witcontroller?srsltid=AfmBOor1vJFxJRlUXj0FpI2E6JM4anwHzLv4IxYo9wwbWouIjegVqiMr)
 
-<img src="images/railsnail_case.png" width="300;"></img> <br/>
+<img src="images/railsnail_case.png" height="240;"></img> <br/>
 Railsnail version. See [RMweb](https://www.rmweb.co.uk/forums/topic/186297-project-a-witcontroller-wireless-throttle-to-control-my-dcc-ex-commandstation/).
 
-<img src="images/kees_case.png" width="300;"></img> <br/>
+<img src="images/kees_case.png" height="300;"></img> <br/>
 kees version. See [printables](https://www.printables.com/model/907658-dccexcontroller-witcontroller).
 
-<img src="images/case_uknown.png" width="300;"></img> <br/>
+<img src="images/case_uknown.png" height="300;"></img> <br/>
 Unknown author. See [Thingiverse](https://makerworld.com/en/models/819825).
 
-<img src="images/gingerangles_version.png" width="300;"></img> <br/>
+<img src="images/gingerangles_version.png" height="300;"></img> <br/>
 *gingerangles* version with 2.4 inch screen...
 gingerangels can be contacted on the DCC-EX Discord server.
 [Discord Invite](https://discord.gg/8ghsjsBup8) - 
 [specific message](https://discord.com/channels/713189617066836079/735156882511102033/1316646832297742380)
 
-<img src="images/rdbnogueira_version.png" width="300;"></img> <br/> 
+<img src="images/rdbnogueira_version.png" height="250;"></img> <br/> 
 rdbnogueira version. See [Thingiverse](https://www.thingiverse.com/thing:6956982)
 
-<img src="https://github.com/dvirgo62/Printed-case-for-witcontroller/blob/main/PXL_20250910_022436424.jpg?raw=true" width="300;"></img> <br/>
+<img src="https://github.com/dvirgo62/Printed-case-for-witcontroller/blob/main/PXL_20250910_022436424.jpg?raw=true" height="300;"></img> <br/>
 David Virgo's version using the EC11 encoder. See [GitHub](https://github.com/dvirgo62/Printed-case-for-witcontroller?fbclid=IwY2xjawMyNLNleHRuA2FlbQIxMABicmlkETFTZ3RWbmRYck9MRENISVczAR7I770O70-brr0UWQ1O463MGa91Kf7WoZwbx85NPC72q69bG04gduhkIRDuFg_aem_znuhLVk6PxQxmlZntuLdAA)
 
-<img src="images/markwtech_case.jpg" width="300;"></img> <br/> 
+<img src="images/markwtech_case.jpg" height="200;"></img> <br/> 
 markwtech version. See [Thingiverse](https://www.thingiverse.com/thing:7029069)
+
+<img src="images/michael_tagg.png" height="200;"></img> <br/> 
+Michael Tagg version.
 
 ---
 
@@ -333,7 +335,7 @@ The instructions below are for using the **Arduino IDE** and **GitHub Desktop**.
        * Select a local folder to install it.  The default folder for the Arduino usually looks like "...<username>\Documents\Arduino\". (This is a good but not essential place to put it.)
        * Click *Clone*
        * **Subsequently**  (Anytime after the first 'clone')
-         * click *Fetch Origin* and any changes to the code will be bought down to you PC, but you config_buttons.h and config_network.h will not be touched.
+         * click *Fetch Origin* and any changes to the code will be bought down to you PC, but your `config_buttons.h` and `config_network.h` will not be touched.
     * Option - Download ***Not Recommended***
        * Open *https://github.com/flash62au/WiTcontroller*
        * Click the green "Code" button and select download zip
@@ -429,21 +431,22 @@ Using 2.4gHz Wifi channels beyond 10 (11-13) is problematic. I have added an exp
 
 A "Throttle" can control only one train, which may be one loco, or more than one loco in consist/MU.
 
-*WiTcontroller*, as a "controller", **contains up to six (6) "throttles"**. Each of which can control any number of locos in consist/MU. You can swap between throttles at will (``keypad 5``) to select which locos/consists/MUs you you are manipulating at a given time. While you can only manipulate one loco/consist/MU at at time, the others continue running at the setting you last gave it.
+*WiTcontroller*, as a "controller", **contains up to six (6) "throttles"**. Each of which can control any number of locos in consist/MU. You can swap between throttles at will (``keypad 5``) to select which locos/consists/MUs you are manipulating at any given time. While you can only manipulate one loco/consist/MU at a time, the others continue running at the setting you last gave them.
 
 ### Features
 
 **Currently functioning:**
+
 WiTcontroller:
 
 * Provides a list of discovered SSIDs with the ability to choose one. When you select one:
   * If it is one in your specified list (in the sketch), it will use that specified password
-  * If it is a DCC-EX EX-CommandStation in Access Point (AP) mode, it will try to guess the password. 
+  * If it is a DCC-EX EX-CommandStation in Access Point (AP) mode, it will try to guess the password.
   
     *Warning!* prior to version 1.108 WiTcontroller assumes that it will be the default password for EX-CommandStations. If you have changed the password it will fail to connect unless you have the SSID *and correct password* listed in `config_network.h`.  
 
     From version 1.108 it will try to connect to a DCC-EX EX-CommandStation with the 'guessed' password on the first attempt.  Then, if it fails to connect, it will ask for the password on the second attempt.
-  * Otherwise it will ask to enter the password (Use the rotary encoder to choose each character and the encoder button to select it.  ``*`` = backspace.  ``#`` = enter the password.) 
+  * Otherwise it will ask to enter the password (Use the rotary encoder to choose each character and the encoder button to select it.  ``*`` = backspace.  ``#`` = enter the password.)
 
     Any/all passwords entered this way will be stored in non-volatile memory and will be retrieved on the next attempt to connect, then WiTcontroller will allow you to edit or confirm it
 * Optionally provides a list of SSIDs with the specified passwords (in the sketch) to choose from
