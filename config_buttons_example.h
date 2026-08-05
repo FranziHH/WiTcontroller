@@ -10,7 +10,7 @@
 // ********************************************************************************************
 // Encoder Direction and Actions
 
-// Define the rotation diection for the rotary encoder to increase speed.
+// Define the rotation direction for the rotary encoder to increase speed.
 //   false = Counter clockwise
 //   true = clockwise
 // The default value is false (counter clockwise)
@@ -171,7 +171,7 @@
 // *******************************************************************************************************************
 // Additional/Optional User Defined Commands
 
-// These can be any legitimate WiThrottle protocol command encosed in quotes or double quotes
+// These can be any legitimate WiThrottle protocol command enclosed in quotes or double quotes
 // refer to https://www.jmri.org/help/en/package/jmri/jmrit/withrottle/Protocol.shtml
 
 // alert message
@@ -183,6 +183,10 @@
 // #define CUSTOM_COMMAND_5 ""
 // #define CUSTOM_COMMAND_6 ""
 // #define CUSTOM_COMMAND_7 ""
+// #define CUSTOM_COMMAND_8 ""
+// #define CUSTOM_COMMAND_9 ""
+// #define CUSTOM_COMMAND_10 ""
+// #define CUSTOM_COMMAND_11 ""
 
 // ********************************************************************************************
 // oLED definition

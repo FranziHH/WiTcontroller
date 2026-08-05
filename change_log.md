@@ -2,6 +2,10 @@
 
 ## Versions
 
+### V1.112
+
+- Increase the number of supported custom commands to 11
+
 ### V1.111
 
 - bug fix for 1.110

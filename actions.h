@@ -81,3 +81,7 @@
 #define CUSTOM_5 525
 #define CUSTOM_6 526
 #define CUSTOM_7 527
+#define CUSTOM_8 528
+#define CUSTOM_9 529
+#define CUSTOM_10 530
+#define CUSTOM_11 531

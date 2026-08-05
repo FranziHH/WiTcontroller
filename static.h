@@ -1,4 +1,4 @@
-const String appVersion = "v1.111";
+const String appVersion = "v1.112";
 #ifndef CUSTOM_APPNAME
    const String appName = "WiTcontroller";
 #else
@@ -849,6 +849,18 @@ const char ssidPasswordBlankChar = 164;
 #endif 
 #ifndef CUSTOM_COMMAND_7
    #define CUSTOM_COMMAND_7 ""
+#endif 
+#ifndef CUSTOM_COMMAND_8
+   #define CUSTOM_COMMAND_8 ""
+#endif 
+#ifndef CUSTOM_COMMAND_9
+   #define CUSTOM_COMMAND_9 ""
+#endif 
+#ifndef CUSTOM_COMMAND_10
+   #define CUSTOM_COMMAND_10 ""
+#endif 
+#ifndef CUSTOM_COMMAND_11
+   #define CUSTOM_COMMAND_11 ""
 #endif 
 
 // *******************************************************************************************************************

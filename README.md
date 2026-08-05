@@ -672,6 +672,10 @@ Note: you need to edit ``config_buttons.h`` to alter these assignments   (copy `
 * CUSTOM_5   - There must be already be a command defined as ``#CUSTOM_COMMAND_5 ...``
 * CUSTOM_6   - There must be already be a command defined as ``#CUSTOM_COMMAND_6 ...``
 * CUSTOM_7   - There must be already be a command defined as ``#CUSTOM_COMMAND_7 ...``
+* CUSTOM_8   - There must be already be a command defined as ``#CUSTOM_COMMAND_8 ...``
+* CUSTOM_9   - There must be already be a command defined as ``#CUSTOM_COMMAND_9 ...``
+* CUSTOM_10  - There must be already be a command defined as ``#CUSTOM_COMMAND_10 ...``
+* CUSTOM_10  - There must be already be a command defined as ``#CUSTOM_COMMAND_11 ...``
 
 <br/>
 <hr style="border: none; height: 4px; background-color: #007bff; border-radius: 2px;">
