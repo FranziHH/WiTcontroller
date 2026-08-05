@@ -2379,6 +2379,22 @@ void doDirectAction(int buttonAction) {
         wiThrottleProtocol.sendCommand(CUSTOM_COMMAND_7);
         break; 
       }
+      case CUSTOM_8: {
+        wiThrottleProtocol.sendCommand(CUSTOM_COMMAND_8);
+        break; 
+      }
+      case CUSTOM_9: {
+        wiThrottleProtocol.sendCommand(CUSTOM_COMMAND_9);
+        break; 
+      }
+      case CUSTOM_10: {
+        wiThrottleProtocol.sendCommand(CUSTOM_COMMAND_10);
+        break; 
+      }
+      case CUSTOM_11: {
+        wiThrottleProtocol.sendCommand(CUSTOM_COMMAND_11);
+        break; 
+      }
   }
   // debug_println("doDirectAction(): end");
 }
