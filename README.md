@@ -586,7 +586,7 @@ TT ----------------------------------
 f f f f f f f f f f f f f f f f f f f
               SSSSS  DDDD
               SSSSS  DDDD
-              SSSSS            
+G             SSSSS            
 M             SSSSS              llll
 P  h                          d sss d
 -------------------------------------
@@ -604,6 +604,7 @@ mmmmmmmmm
 * h    = heartbeat (only displays if heartbeat is disabled)
 * M    = Speed step multiplier
 * P    = Track Power
+* G    = Guest Mode / Child Lock Active
 * BBBB = Optional battery state
 * mmmm =  menu, other instructions or broadcast messages
 
@@ -983,16 +984,16 @@ It is believed that the YaMoRC Command Stations are not sending this as the shou
 
 <hr style="height: 1px;">
 
-### Startup Commands
+### Optional Startup Commands
 
 ``#define STARTUP_COMMAND_1 ""`` .. ``#define STARTUP_COMMAND_4 ""``
 
 Optional. If defined, up to four commands will be executed, in order, after connection to the WiThrottle Server.
-Each must be ONLY ONE single valid command.  Either a direct action or a menu action.  Any can be blank or not defined, the others will still be executed.
+Each must be ***ONLY ONE*** single valid command.  Either a direct action or a menu action.  Any can be blank or not defined, the others will still be executed.
 
 > [!NOTE]
 >
-> Selecting from the roster/turnouts etc. is not possible as the commands will execute before the roster loads.
+> Selecting from the roster, routes, turnouts/points, etc. is not possible as the commands will execute before the roster, routes,  turnouts/points load.
 
 <hr style="height: 1px;">
 
@@ -1001,6 +1002,76 @@ Each must be ONLY ONE single valid command.  Either a direct action or a menu ac
 ``#define ACQUIRE_ROSTER_ENTRY_IF_ONLY_ONE true``
 
 Enabling this option will automatically acquire the only roster entry after connection to the WiThrottle Server, but only if there is ***only one*** roster entry.
+
+<hr style="height: 1px;">
+
+### Optional Guest Mode
+
+Modified from code by *Will Jayne - Coventry Railworks*
+
+Guest mode allows you to lock the keyboard by pressing and holding two *additional buttons* together for 1 second (default).  Any *additional buttons* can be configured to activate/deactivate this.  The feature is not enabled by default.
+
+Guest Mode shows a lock indicator on screen and can optionally illuminate a LED indicator. It disables any kepad inputs as well as the "next throttle" function.
+
+*I added this primarily so that children can use the throttle and quick function buttons, without accidentally entering any menu.
+Will*
+
+The feature is not enabled by default.  The featue can only be activted from the Throttle Speed screen. (i.e. not in a menu.)
+
+``#define GUEST_MODE_ENABLED true``
+
+Pins for the 'Additional Buttons' that need to be pressed to activate/deactivate the feature.
+Defaults to 5 and 15, which are the first two default additional button pins.
+***These must correspond to two of the 'additional buttons' pins.  (See above)***
+
+``#define GUEST_MODE_PIN_1 5``
+``#define GUEST_MODE_PIN_2 5``
+
+Optional LED indicator PIN number. Defaults to disabled (-1)
+
+``#define GUEST_MODE_LED_PIN 2``
+
+Timing parameters
+
+``#define GUEST_MODE_HOLD_DURATION 1000``
+``#define GESTURE_PARTNER_WINDOW 250``
+
+<hr style="height: 1px;">
+
+### Optional Search Function commands
+
+Modified from code by *Will Jayne - Coventry Railworks*
+
+From version 1.113, some additional asignable commands are available: ``HORN_OR_WHISTLE_SEARCH``, ``HORN_SEARCH``, ``WHISTLE_SEARCH``  and ``BRAKE_SEACH``
+
+If one of these are assigned to an 'Additional Button', when it is pressed, it will search for the term ("Horn" or "Whistle", "Horn", "Whistle" or "Brake") in the available functions in the current loco, and activate/deacivate the first function it finds that *contains* that term.  Optionally, it will activate any one of the functions that conatin the term randomly.
+
+You can change the terms they search for by adding (or uncommenting) a define in ``config_buttons.h`` , e.g. to the search for "Siren" instead of "Horn" use (case insensitive):
+
+``#define FUNCTION_SEARCH_LABELS { {"Siren","Whistle"}, {"Siren",""}, {"Whistle",""}, {"Brake",""}, {"Bell",""} }``
+
+Note: Each search term is a either/or pair. e.g. ``{"Horn","Whistle"}`` Either of the two term eill be concidered a match. If you only want to one work, leave the second word as an empty string. e.g. ``{"Horn",""}``
+
+You can also add additional search term by redefining all the required terms
+
+e.g. To add "Bell" and "Mute" searches you would add all the lines below:
+
+```c++
+#define BELL_SEARCH 900 // abitrary name. number must be 900 or greater and be unique
+#define MUTE_SEARCH 901 // abitrary name. number must be 900 or greater and be unique
+#define MAX_FUNCTION_SEARCH 6
+#define FUNCTION_SEARCH_LABELS { {"Horn","Whistle"}, {"Horn",""}, {"Whistle",""}, {"Brake",""}, {"Bell",""}, {"Mute",""} }
+#define FUNCTION_SEARCH_IDS {HORN_OR_WHISTLE_SEARCH, HORN_SEARCH, WHISTLE_SEARCH, BRAKE_SEARCH, BELL_SEARCH, MUTE_SEARCH}
+```
+
+Then assign an 'additional button' to ``BELL SEARCH`` or ``MUTE_SEARCH``.
+
+Note: The name of each ``???_SEARCH`` can be anything, but must be unique. The assigned number must 900 or greater, and must be unique.
+
+By default only the first matching function will be activated. You can instead have one random of the matching functions be activated by enabling (uncommenting) the following define:
+
+``#define FUNCTION_SEARCH_RANDOM_MATCH true``
+
 
 <hr style="height: 1px;">
 

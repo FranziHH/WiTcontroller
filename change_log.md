@@ -2,6 +2,12 @@
 
 ## Versions
 
+### V1.113
+
+- Added Guest Mode - modified from the code from Will - Coventry Railworks
+- Added Function Search - modified from the code from Will - Coventry Railworks
+- Moved contents on config_keyboard_etc.h to static.h
+
 ### V1.112
 
 - Increase the number of supported custom commands to 11

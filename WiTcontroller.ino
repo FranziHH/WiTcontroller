@@ -32,7 +32,6 @@
 #include "config_buttons.h"      // keypad buttons assignments
 
 // DO NOT ALTER these files
-#include "config_keypad_etc.h"
 #include "static.h"
 #include "actions.h"
 #include "WiTcontroller.h"
@@ -201,6 +200,34 @@ int routeListIndex[maxRouteList];
 String routeListSysName[maxRouteList]; 
 String routeListUserName[maxRouteList];
 int routeListState[maxRouteList];
+
+//**************************************************************************************
+// Guest Mode - custom function not included with original code. When two of the additional 
+// buttons are pressed together and held for a few seconds, "guest mode" is enabled.
+// This illuminates an optional LED indicator and disables any keypad inputs as well as the "next throttle" 
+// function. I added this primarily so that children can use the throttle and quick function buttons, 
+// without accidentally entering any menus or changing settings. To exit guest mode, press and hold 
+// the lights and sound buttons again.
+//
+// Will - Coventry Railworks
+//**************************************************************************************
+bool guestModeActive = false;
+bool guestModeGestureInProgress = false;
+bool guestModeGestureProcessed = false;
+unsigned long guestModeHoldStartTime = 0;
+const unsigned long guestModeHoldDuration = GUEST_MODE_HOLD_DURATION; // milliseconds - confirmed two-button hold to toggle Guest Mode
+const unsigned long gesturePartnerWindow = GESTURE_PARTNER_WINDOW;    // milliseconds - how long we wait to see if the other button joins
+
+bool guestModeFunctionPending[2] = {false, false};
+unsigned long guestModeFunctionPendingStartTime[2] = {0, 0};
+
+bool guestModeFunctionFiredThisPress[2] = {false, false};
+
+//**************************************************************************************
+// function button searches
+String functionSearchLabels[MAX_FUNCTION_SEARCH][2] = FUNCTION_SEARCH_LABELS;
+int functionSearchIds[MAX_FUNCTION_SEARCH] = FUNCTION_SEARCH_IDS;
+int functionSearchFoundFunctionNumber[MAX_FUNCTION_SEARCH];
 
 // function states
 bool functionStates[6][MAX_FUNCTIONS];   // set to maximum possible (6 throttles)
@@ -1215,7 +1242,7 @@ void buildWitEntry() {
 }
 
 // *********************************************************************************
-//   Non-Volitile storage functions
+//   Non-Volatile storage functions
 
 void setupPreferences(bool forceClear) {
   if (preferencesRead) return;
@@ -1246,11 +1273,11 @@ void readPreferences() {
 
   if (!RESTORE_ACQUIRED_LOCOS) return;
 
-  debug_println("readPreferences(): Reading preferences from non-volitile storage ");
+  debug_println("readPreferences(): Reading preferences from non-volatile storage ");
   nvsPrefs.begin("WitController", true); // read mode
   nvsInit = nvsPrefs.isKey("nvsInit");
   if (nvsInit) {
-    debug_println("readPreferences(): Non-volitile storage is initialised");
+    debug_println("readPreferences(): Non-volatile storage is initialised");
     currentThrottleIndex = 0;
     currentThrottleIndexChar = '0';
 
@@ -1288,14 +1315,14 @@ void readPreferences() {
     resetFunctionStates(currentThrottleIndex);
     writeOledSpeed();
   } else {
-    debug_println("readPreferences(): Non-volitile storage not initialised");
+    debug_println("readPreferences(): Non-volatile storage not initialised");
   }
   preferencesRead = true;
   nvsPrefs.end();
 }
 
 void writePreferences() {
-  debug_println("writePreferences(): Writing preferences to non-volitile storage ");
+  debug_println("writePreferences(): Writing preferences to non-volatile storage ");
   nvsPrefs.begin("WitController", false); // write mode
 
   if (nvsInit) {
@@ -1675,6 +1702,10 @@ void initialiseAdditionalButtons() {
 void additionalButtonLoop() {
   if (witConnectionState != CONNECTION_STATE_CONNECTED) return;
 
+  if (!menuCommandStarted) { // only process the guest mode check if not in a menu command
+   if (guestModeButtonsCheck()) return;  // don't process additional buttons if guest mode gesture is in progress
+  }
+
   int buttonRead;
   for (int i = 0; i < maxAdditionalButtons; i++) {   
     if ( (additionalButtonActions[i] != FUNCTION_NULL) && (additionalButtonPin[i]>=0) ) {
@@ -1716,6 +1747,143 @@ void additionalButtonLoop() {
     }
   }
 }
+
+//label search function logic
+void doLabeledButton(bool pressed, int functionIndex) {
+  debug_print("doLabeledButton() functionIndex: "); debug_print(functionIndex); 
+  debug_print(" term 0: "); debug_print(functionSearchLabels[functionIndex][0]);
+  debug_print(" term 1: "); debug_println(functionSearchLabels[functionIndex][1]);
+
+  if (pressed) {
+    String label;
+    String searchTerm = functionSearchLabels[functionIndex][0];
+    searchTerm.toLowerCase();
+    String searchTerm2 = functionSearchLabels[functionIndex][1];
+    searchTerm2.toLowerCase();
+    int foundFunctionNumber = -1;
+
+    if (!FUNCTION_SEARCH_RANDOM_MATCH) {
+
+      for (int i = 0; i < MAX_FUNCTIONS; i++) {
+        debug_print("doLabeledButton() i: "); debug_println(i); 
+        label = functionLabels[currentThrottleIndex][i];
+
+        label.toLowerCase();
+
+        if (label.indexOf(searchTerm) >= 0) {
+          debug_print("doLabeledButton() Term 0 found i: "); debug_print(i); debug_print(" label: "); debug_println(label);
+          foundFunctionNumber = i;
+          break;
+        }
+        if ( (searchTerm2.length()>0) && (label.indexOf(searchTerm2) >= 0) ) {
+          debug_print("doLabeledButton() Term 1 found i: "); debug_print(i); debug_print(" label: "); debug_println(label);
+          foundFunctionNumber = i;
+          break;
+        }
+      }
+
+    } else { //random match
+
+      int matches[MAX_FUNCTIONS];
+      int matchCount = 0;
+  
+      for (int i = 0; i < MAX_FUNCTIONS; i++) {
+        label = functionLabels[currentThrottleIndex][i];
+        label.toLowerCase();
+        if (label.indexOf(searchTerm) >= 0) {
+          debug_print("doLabeledButton() Term 0 found i: "); debug_print(i); debug_print(" label: "); debug_println(label);
+          matches[matchCount] = i;
+          matchCount++;
+        }
+        if ( (searchTerm2.length()>0) && (label.indexOf(searchTerm2) >= 0) ) {
+          debug_print("doLabeledButton() Term 1 found i: "); debug_print(i); debug_print(" label: "); debug_println(label);
+          matches[matchCount] = i;
+          matchCount++;
+        }
+      }
+
+      if (matchCount>0) {
+        foundFunctionNumber = matches[random(0, matchCount)];
+      }
+    }
+
+    if (foundFunctionNumber == -1) {
+      functionSearchFoundFunctionNumber[functionIndex] = -1;
+      return;
+    }
+
+    functionSearchFoundFunctionNumber[functionIndex] = foundFunctionNumber;
+    doDirectFunction(currentThrottleIndex, functionSearchFoundFunctionNumber[functionIndex], true);
+
+  } else {
+    if (functionSearchFoundFunctionNumber[functionIndex] != -1) {
+      doDirectFunction(currentThrottleIndex, functionSearchFoundFunctionNumber[functionIndex], false);
+      functionSearchFoundFunctionNumber[functionIndex] = -1;
+    }
+  }
+}
+
+
+//guest mode detection logic
+bool guestModeButtonsCheck() {
+  bool result = false;
+  
+  if (GUEST_MODE_ENABLED == false) return result;
+  
+  bool button1Pressed = (digitalRead(GUEST_MODE_PIN_1) == LOW);
+  bool button2Pressed = (digitalRead(GUEST_MODE_PIN_2) == LOW);
+
+  if (button1Pressed && button2Pressed) {
+    guestModeFunctionPending[0] = false;
+    guestModeFunctionPending[1] = false;
+
+    if (!guestModeGestureInProgress) {
+     debug_println("guestModeButtonsCheck()- gesture started"); 
+      guestModeGestureInProgress = true;
+      guestModeHoldStartTime = millis();
+    } else {
+      if ( (!guestModeGestureProcessed) && (millis() - guestModeHoldStartTime >= guestModeHoldDuration) ) {
+        guestModeActive = !guestModeActive;
+        guestModeGestureProcessed = true;
+        debug_print("guestModeButtonsCheck()- "); debug_println(guestModeActive? "activated" : "deactivated"); 
+        if (GUEST_MODE_LED_PIN >= 0) {
+          digitalWrite(GUEST_MODE_LED_PIN, guestModeActive ? HIGH : LOW);
+        }
+
+        if (lastOledScreen == last_oled_screen_speed) {
+          writeOledSpeed();
+        }
+      }
+      result = true; // don't process the button presses as normal
+    }
+  } else if (button1Pressed || button2Pressed) { // only one is pressed
+    guestModeGestureInProgress = false;
+    guestModeGestureProcessed = false;
+
+    int thisButtonIndex = button1Pressed ? 0 : 1;
+    debug_print("guestModeButtonsCheck()- one button: "); debug_println(thisButtonIndex);
+  
+    if (!guestModeFunctionPending[thisButtonIndex]) {
+      guestModeFunctionPending[thisButtonIndex] = true;
+      guestModeFunctionPendingStartTime[thisButtonIndex] = millis();
+      guestModeFunctionFiredThisPress[thisButtonIndex] = false;
+      result = true; // don't process the button presses as normal
+      debug_print("guestModeButtonsCheck()- one button - first press: "); debug_println(thisButtonIndex);
+
+    } else if (millis() - guestModeFunctionPendingStartTime[thisButtonIndex] >= gesturePartnerWindow) {
+      guestModeFunctionFiredThisPress[thisButtonIndex] = true;
+      result = false; // need to process the button presses as normal
+      debug_print("guestModeButtonsCheck()- one button - after wait: "); debug_println(thisButtonIndex);
+    }
+
+  } else {
+    guestModeGestureInProgress = false;
+    guestModeGestureProcessed = false;
+    result = false; // need to process the button presses as normal
+  }
+  return result;
+}
+
 
 // *********************************************************************************
 //  Setup and Loop
@@ -1835,7 +2003,9 @@ void loop() {
 // *********************************************************************************
 
 void doKeyPress(char key, bool pressed) {
-    debug_print("doKeyPress(): key: "); debug_print(key); debug_print(" keypadUseType: ");debug_println(keypadUseType);
+  if (guestModeActive) return;
+
+  debug_print("doKeyPress(): key: "); debug_print(key); debug_print(" keypadUseType: ");debug_println(keypadUseType);
 
   if (pressed)  { //pressed
     debug_println("doKeyPress(): pressed"); 
@@ -2235,8 +2405,21 @@ void doDirectAdditionalButtonCommand (int buttonIndex, bool pressed) {
       } else {
         doDirectFunction(currentThrottleIndex, buttonAction, pressed, false);
       }
-    } else { // not a function
-      if (pressed) { // only process these on the key press, not the release
+
+    } else { 
+
+      // see if it is a search function, if so then process it as a search function, otherwise process it as a direct action
+      bool isSearchFunction = false;
+      for (int i=0; i<MAX_FUNCTION_SEARCH; i++) {
+        if (functionSearchIds[i] == buttonAction) {
+          isSearchFunction = true;
+          doLabeledButton(pressed,i);
+          break;
+        }
+      }
+
+      // not a function
+      if ( (!isSearchFunction) && (pressed) ) { // only process these on the key press, not the release
         doDirectAction(buttonAction);
       }
     }
@@ -3027,6 +3210,9 @@ void powerToggle() {
 
 void nextThrottle() {
   debug_print("nextThrottle(): "); 
+  
+  if (guestModeActive) return;  // don't allow next throttle in guest mode
+
   int wasThrottle = currentThrottleIndex;
   currentThrottleIndex++;
   if (currentThrottleIndex >= maxThrottles) {
@@ -3660,6 +3846,9 @@ void writeOledSpeed() {
   writeOledBattery();
   writeOledSpeedStepMultiplier();
 
+  writeOledGuestMode();
+
+  u8g2.setDrawColor(1);
   if (trackPower == PowerOn) {
     // u8g2.drawBox(0,41,15,8);
     u8g2.drawRBox(0,40,9,9,1);
@@ -3712,6 +3901,14 @@ void writeOledSpeedStepMultiplier() {
     u8g2.setFont(FONT_DEFAULT);
     // u8g2.drawStr(0, 37, ("X " + String(speedStepCurrentMultiplier)).c_str());
     u8g2.drawStr(9, 37, String(speedStepCurrentMultiplier).c_str());
+  }
+}
+
+void writeOledGuestMode() {
+  if (guestModeActive) {
+    u8g2.setDrawColor(1);
+    u8g2.setFont(FONT_GLYPHS);
+    u8g2.drawGlyph(1, 30, glyph_guest_mode);  
   }
 }
 
