@@ -310,6 +310,32 @@
 // #define ADDITIONAL_BUTTON_DEBOUNCE_DELAY        50    
 
 // *******************************************************************************************************************
+// Search Functions - Additional Buttons Only
+
+// These are functions that can be assigned to the additional buttons
+// "Horn/Whistle","Horn","Whistle""Brake" are defined by default (as below), but can be added to or changed
+// #define MAX_FUNCTION_SEARCH 4
+// #define FUNCTION_SEARCH_LABELS { {"Horn","Whistle"}, {"Horn",""}, {"Whistle",""}, {"Brake",""} }
+// #define FUNCTION_SEARCH_IDS {HORN_OR_WHISTLE_SEARCH, HORN_SEARCH, WHISTLE_SEARCH, BRAKE_SEARCH}
+
+// To define an additional search function, add the label and ID to the lists above
+// They must be defined as pairs of terms to search for.  It the second term is not needed, it still must be included (use "").
+// Your custom IDs must be in the range from 900 to 999
+
+// e.g.
+// #define BELL_SEARCH 900
+// #define MAX_FUNCTION_SEARCH 5
+// #define FUNCTION_SEARCH_LABELS { {"Horn","Whistle"}, {"Horn",""}, {"Whistle",""}, {"Brake",""}, {"Bell",""} }
+// #define FUNCTION_SEARCH_IDS {HORN_OR_WHISTLE_SEARCH, HORN_SEARCH, WHISTLE_SEARCH, BRAKE_SEARCH, BELL_SEARCH}
+
+// You can then use the new search function in the same way as the default ones, e.g. assign it to an additional button
+
+// By default only the first matching function will be activated.
+// You can instead have one random of the matching functions be activated by enabling (uncommenting) the following define:
+
+// #define FUNCTION_SEARCH_RANDOM_MATCH true
+
+// *******************************************************************************************************************
 // Additional buttons
 
 // This format for the additional buttons IS NOW DEPRECATED
@@ -590,3 +616,20 @@
 // Uncomment and change if required
 //
 // #define CUSTOM_APPNAME "myname"
+
+// *******************************************************************************************************************
+// Guest Mode
+// Uncomment and change if required
+
+// defaults to disabled (false)
+// #define GUEST_MODE_ENABLED true
+
+// These must correspond to two of the 'additional buttons' pins.  (See above)
+// #define GUEST_MODE_PIN_1 41
+// #define GUEST_MODE_PIN_2 42
+
+// optional  defaults to disabled (-1)
+// #define GUEST_MODE_LED_PIN 2
+
+// #define GUEST_MODE_HOLD_DURATION 1000
+// #define GESTURE_PARTNER_WINDOW 250

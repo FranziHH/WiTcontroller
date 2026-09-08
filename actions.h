@@ -85,3 +85,13 @@
 #define CUSTOM_9 529
 #define CUSTOM_10 530
 #define CUSTOM_11 531
+
+// search functions
+// these can only be assigned to 'additional buttons' and not to the keypad or encoder button
+#define HORN_OR_WHISTLE_SEARCH 600
+#define WHISTLE_SEARCH 601
+#define HORN_SEARCH 602
+#define BRAKE_SEARCH 603
+
+// reserved for custom search commands
+// 900 - 999

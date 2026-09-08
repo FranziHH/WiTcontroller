@@ -135,6 +135,9 @@ void keypadEvent(KeypadEvent);
 void initialiseAdditionalButtons(void);
 void additionalButtonLoop(void);
 
+void doLabeledButton(bool, int);
+bool guestModeButtonsCheck(void);
+
 void setup(void);
 void loop(void);
 
@@ -197,6 +200,7 @@ void writeOledMenu(String, bool);
 void writeOledAllLocos(bool);
 void writeOledEditConsist();
 void writeHeartbeatCheck(void);
+void writeOledGuestMode(void);
 void writeOledSpeed(void);
 void writeOledSpeedStepMultiplier();
 void writeOledBattery();
