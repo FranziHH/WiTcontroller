@@ -2,10 +2,23 @@
 
 ## Versions
 
+### V1.116
+
+- Disable all custom menu commands if guest mode is active.
+
+### V1.115
+
+- Added option to allow the use of the keypad direct commands in guest mode. It is disabled by default.
+- Added separate option for allowing NEXT_THROTTLE in guest mode. It is disabled by default.
+
+### V1.114
+
+- Added the optional custom menu commands
+
 ### V1.113
 
-- Added Guest Mode - modified from the code from Will - Coventry Railworks
-- Added Function Search - modified from the code from Will - Coventry Railworks
+- Added Guest Mode - modified from the code from Will Jayne - Coventry Railworks
+- Added Function Search - modified from the code from Will Jayne - Coventry Railworks
 - Moved contents on config_keyboard_etc.h to static.h
 
 ### V1.112

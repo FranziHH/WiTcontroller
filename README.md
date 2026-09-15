@@ -686,6 +686,22 @@ Note: you need to edit ``config_buttons.h`` to alter these assignments   (copy `
 * CUSTOM_9   - There must be already be a command defined as ``#CUSTOM_COMMAND_9 ...``
 * CUSTOM_10  - There must be already be a command defined as ``#CUSTOM_COMMAND_10 ...``
 * CUSTOM_10  - There must be already be a command defined as ``#CUSTOM_COMMAND_11 ...``
+* HORN_OR_WHISTLE_SEARCH
+* HORN_SEARCH
+* WHISTLE_SEARCH
+* BRAKE_SEARCH
+* additional custom searches (see below)
+* CUSTOM_MENU_SELECT_1   - There must be already be a command defined as ``#CUSTOM_MENU_SELECT_COMMAND_1 ...``
+* CUSTOM_MENU_SELECT_2   - There must be already be a command defined as ``#CUSTOM_MENU_SELECT_COMMAND_2 ...``
+* CUSTOM_MENU_SELECT_3   - There must be already be a command defined as ``#CUSTOM_MENU_SELECT_COMMAND_3 ...``
+* CUSTOM_MENU_SELECT_4   - There must be already be a command defined as ``#CUSTOM_MENU_SELECT_COMMAND_4 ...``
+* CUSTOM_MENU_SELECT_5   - There must be already be a command defined as ``#CUSTOM_MENU_SELECT_COMMAND_5 ...``
+* CUSTOM_MENU_SELECT_6   - There must be already be a command defined as ``#CUSTOM_MENU_SELECT_COMMAND_6 ...``
+* CUSTOM_MENU_SELECT_7   - There must be already be a command defined as ``#CUSTOM_MENU_SELECT_COMMAND_7 ...``
+* CUSTOM_MENU_SELECT_8   - There must be already be a command defined as ``#CUSTOM_MENU_SELECT_COMMAND_8 ...``
+* CUSTOM_MENU_SELECT_9   - There must be already be a command defined as ``#CUSTOM_MENU_SELECT_COMMAND_9 ...``
+* CUSTOM_MENU_SELECT_10  - There must be already be a command defined as ``#CUSTOM_MENU_SELECT_COMMAND_10 ...``
+* CUSTOM_MENU_SELECT_10  - There must be already be a command defined as ``#CUSTOM_MENU_SELECT_COMMAND_11 ...``
 
 <br/>
 <hr style="border: none; height: 4px; background-color: #007bff; border-radius: 2px;">
@@ -1045,6 +1061,16 @@ Timing parameters
 ``#define GUEST_MODE_HOLD_DURATION 1000``
 ``#define GESTURE_PARTNER_WINDOW 250``
 
+Optionally allow access to the direct keypad commands. .i.e. everything except '*'. Defaults to false.
+
+``#define GUEST_MODE_ALLOW_DIRECT_KEYBOARD_COMMANDS true``
+
+Optionally allow access to the other throttles (NEXT_THROTTLE). Defaults to false.
+
+``#define GUEST_MODE_ALLOW_NEXT_THROTTLE true``
+
+Note: Holding the guest mode activation mode buttons can currently be problematic if you have assigned custom menu commands (see below) to those buttons.  I am working on a solution for that.
+
 <hr style="height: 1px;">
 
 ### Optional Search Function commands
@@ -1081,6 +1107,45 @@ By default only the first matching function will be activated. You can instead h
 
 ``#define FUNCTION_SEARCH_RANDOM_MATCH true``
 
+<hr style="height: 1px;">
+
+### Additional/Optional User Defined Commands
+
+Up to 11 custom Withrotle commands can be assigned to the additional buttons.
+
+These can be any legitimate WiThrottle protocol command enclosed in quotes or double quotes. refer to https://www.jmri.org/help/en/package/jmri/jmrit/withrottle/Protocol.shtml
+
+These are created by assing values to ``CUSTOM_COMMAND_1`` to ``CUSTOM_COMMAND_11``. e.g.
+
+```c++
+#define CUSTOM_COMMAND_1 "HMHello World" // alert message
+#define CUSTOM_COMMAND_2 "PRA2R500" // set route R500  (DCCEX system route prefix is 'R')
+```
+
+To use these custom WiThrottle commands on additional buttons you assign the button the value ``CUSTOM_1`` to ``CUSTOM_11``.  (See the example above.)
+
+Note: The definition of the command and what you assign to the additional button are different.
+
+<hr style="height: 1px;">
+
+### Additional / optional Custom Menu Select Commands
+
+Up to 11 custom menu commands can be assigned to the additional buttons.
+
+These can be any legitimate menu character sequence.  Each can can contain multiple commands.
+
+These are created by assing values to ``CUSTOM_MENU_SELECT_COMMAND_1`` to ``CUSTOM_MENU_SELECT_COMMAND_1``. e.g.
+
+```c++
+#define CUSTOM_MENU_SELECT_COMMAND_1 "*1" // Open the add loco menu screen
+#define CUSTOM_MENU_SELECT_COMMAND_2 "*1999#" // Select loco 999 and return to the throttle screen
+#define CUSTOM_MENU_SELECT_COMMAND_3 "*2#*1888#*1999#" // Drop the current locos, then select locos 888 and 999 and return to the throttle screen
+```
+
+To use these custom menu commands on additional buttons you assign the button the value ``CUSTOM_MENU_SELECT_1`` to ``CUSTOM_MENU_SELECT_11``.  (See the example above.)
+
+Note: The definition of the command and what you assign to the additional button are different.
+Note: Custom menu commands are fully disabled in guest mode.
 
 <hr style="height: 1px;">
 
