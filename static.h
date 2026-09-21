@@ -1,4 +1,4 @@
-const String appVersion = "v1.116";
+const String appVersion = "v1.117";
 #ifndef CUSTOM_APPNAME
    const String appName = "WiTcontroller";
 #else
@@ -115,7 +115,7 @@ Keypad keypad = Keypad( makeKeymap(keys), pin_rows, pin_column, ROW_NUM, COLUMN_
    #define MENU_TEXT_FUNCTION_LIST             "* Cancel      0-9      #Pg"
 #endif
 #ifndef MENU_TEXT_SELECT_WIT_SERVICE
-   #define MENU_TEXT_SELECT_WIT_SERVICE        "0-4      # Entry      E.btn OFF"
+   #define MENU_TEXT_SELECT_WIT_SERVICE        "0-4 * Refrsh # Entry E.btn OFF"
 #endif
 #ifndef MENU_TEXT_SELECT_WIT_ENTRY
    #define MENU_TEXT_SELECT_WIT_ENTRY          "0-9   * Back  # Go   E.btn OFF"
@@ -631,6 +631,10 @@ const int glyph_speed_step = 0x00d6;
 #endif
 #ifndef SPEED_STEP_ADDITIONAL_MULTIPLIER
    #define SPEED_STEP_ADDITIONAL_MULTIPLIER 2
+#endif
+
+#ifndef DEFAULT_SPEED_STEP_MULTIPLIER
+   #define DEFAULT_SPEED_STEP_MULTIPLIER 1
 #endif
 
 
@@ -1349,4 +1353,11 @@ const char ssidPasswordBlankChar = 164;
 
 #ifndef GUEST_MODE_ALLOW_NEXT_THROTTLE
    #define GUEST_MODE_ALLOW_NEXT_THROTTLE true
+#endif
+
+// ***************************************************
+// Set speed to 0 when direction is changed.
+
+#ifndef SPEED_ZERO_ON_DIRECTION_CHANGE
+   #define SPEED_ZERO_ON_DIRECTION_CHANGE false
 #endif

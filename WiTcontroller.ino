@@ -76,7 +76,7 @@ bool oledTextInvert[18] = {false, false, false, false, false, false, false, fals
 
 int currentSpeed[6];   // set to maximum possible (6)
 Direction currentDirection[6];   // set to maximum possible (6)
-int speedStepCurrentMultiplier = 1;
+int speedStepCurrentMultiplier = DEFAULT_SPEED_STEP_MULTIPLIER;
 
 TrackPower trackPower = PowerUnknown;
 String turnoutPrefix = "";
@@ -271,6 +271,8 @@ const bool encoderRotationClockwiseIsIncreaseSpeed = ENCODER_ROTATION_CLOCKWISE_
 
 const bool toggleDirectionOnEncoderButtonPressWhenStationary = TOGGLE_DIRECTION_ON_ENCODER_BUTTON_PRESSED_WHEN_STATIONAY;
 // true = if the locos(s) are stationary, clicking the encoder button will toggle the direction
+
+const bool speedZeroOnDirectionChange = SPEED_ZERO_ON_DIRECTION_CHANGE;
 
 //4x3 keypad only uses 0-9
 //4x4 uses all 14 
@@ -1953,7 +1955,7 @@ void setup() {
   for (int i=0; i< 6; i++) {
     currentSpeed[i] = 0;
     currentDirection[i] = Forward;
-    currentSpeedStep[i] = speedStep;
+    currentSpeedStep[i] = speedStep * speedStepCurrentMultiplier;
   }
 
   debug_println("Host Name and Country Start"); 
@@ -2165,6 +2167,10 @@ void doKeyPress(char key, bool pressed) {
             witConnectionState = CONNECTION_STATE_ENTRY_REQUIRED;
             buildWitEntry();
             enterWitServer();
+            break;
+          case '*': // refresh
+            MDNS.begin("WiTcontroller");
+            witConnectionState = CONNECTION_STATE_DISCONNECTED;
             break;
           default:  // do nothing 
             break;
@@ -3172,7 +3178,6 @@ void changeDirection(int multiThrottleIndex, Direction direction) {
     if (locoCount == 1) {
       debug_println("changeDirection(): one loco");
       wiThrottleProtocol.setDirection(multiThrottleChar, direction);  // change all
-
     } else {
       debug_println("changeDirection(): multiple locos");
       leadLoco = wiThrottleProtocol.getLeadLocomotive(multiThrottleChar);
@@ -3194,6 +3199,13 @@ void changeDirection(int multiThrottleIndex, Direction direction) {
       wiThrottleProtocol.setDirection(multiThrottleChar, leadLoco, direction);
     } 
   }
+
+  // If config enabled, set speed to 0 when changing direction
+  if(speedZeroOnDirectionChange) {
+    debug_println("changeDirection(): speed set to 0 on direction change");
+    speedSet(multiThrottleIndex, 0);
+  }
+
   writeOledSpeed();
   // debug_println("changeDirection(): end "); 
 }

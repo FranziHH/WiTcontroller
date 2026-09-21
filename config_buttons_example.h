@@ -138,6 +138,10 @@
 // The default is 2
 // #define SPEED_STEP_ADDITIONAL_MULTIPLIER 2
 
+// *******************************************************************************************************************
+// Default speed step multiplier
+// #define DEFAULT_SPEED_STEP_MULTIPLIER 1
+
 // by default, the speed will be displayed as the the DCC speed (0-126)
 // IMPORTANT: only one should be enabled.  If DISPLAY_SPEED_AS_PERCENT is enabled it 
 // will take presidence over DISPLAY_SPEED_AS_0_TO_28
@@ -582,6 +586,14 @@
 // enabled by default
 
 // #define RESTORE_ACQUIRED_LOCOS false
+
+
+// *******************************************************************************************************************
+// Set speed to 0 on direction change
+
+// Uncomment and change if required
+//#define SPEED_ZERO_ON_DIRECTION_CHANGE true
+
 
 // *******************************************************************************************************************
 // Custom App Name
