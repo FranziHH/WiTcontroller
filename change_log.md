@@ -2,9 +2,16 @@
 
 ## Versions
 
+### V1.118
+
+- New option USE_LARGER_FONT_FOR_LOCOS
+- Bug fix. Don't clear the function states when selecting a subsequent loco of a consist
+- Ignore entered DCC addresses greater than 10239 or equal to 0
+
 ### V1.117
 
-- New, experimental, configuration generation page
+- New, experimental, configuration button generation page
+- New, experimental, configuration network generation page
 - New option SPEED_ZERO_ON_DIRECTION_CHANGE from Nico/ocin
 - New option DEFAULT_SPEED_STEP_MULTIPLIER from Nico/ocin
 
