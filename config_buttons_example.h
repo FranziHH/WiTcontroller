@@ -113,10 +113,18 @@
 // #define HASH_SHOWS_FUNCTIONS_INSTEAD_OF_KEY_DEFS         false
 
 // By default the Function list will show 10 functions per page, 
-// with a maximum of 10 characters of each label being visible
-// Uncomment this define to show only 5 functions per page with each label using the full width of the screen
+// with a maximum of 10 characters of each label being visible.
+// Uncomment this define to show only 5 functions per page with each label using 
+// the full width of the screen.
 
 // #define SHOW_LONGER_FUNCTION_LABELS    true
+
+// By default the Function list will show the function numbers along with the labels, 
+// for the functions greater than 5.
+// Uncomment this define to show hide the function numbers and show only the labels.  
+// (This will allow more characters of the label to be visible)
+
+// #define HIDE_FUNCTION_NUMBERS_WITH_LABELS    true
 
 
 // *******************************************************************************************************************
@@ -238,6 +246,12 @@
 
 // This one works with a 2.42 inch SSD1309 based oLED
 // #define OLED_TYPE U8G2_SSD1309_128X64_NONAME2_F_HW_I2C u8g2(U8G2_R0, /* reset=*/ U8X8_PIN_NONE, /* clock=*/ 22, /* data=*/ 23);
+
+// Rotation Reference
+// • U8G2_R0: No rotation (Landscape)
+// • U8G2_R1: 90 degrees clockwise (Portrait)
+// • U8G2_R2: 180 degrees clockwise (Inverted Landscape)
+//• U8G2_R3: 270 degrees clockwise (Inverted Portrait)
 
 // *******************************************************************************************************************
 // Debugging
