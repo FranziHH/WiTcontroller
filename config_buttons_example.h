@@ -127,6 +127,13 @@
 // #define HIDE_FUNCTION_NUMBERS_WITH_LABELS    true
 
 
+// By default the Routes and Turnouts/Points list will show 10 per page, 
+// with a maximum of 10 characters of each label being visible.
+// Uncomment this define to show only 5 per page with each label using 
+// the full width of the screen.
+
+// #define SHOW_LONGER_ROUTE_AND_TURNOUT_LABELS true
+
 // *******************************************************************************************************************
 // Maximum number of throttles
 
@@ -251,7 +258,7 @@
 // • U8G2_R0: No rotation (Landscape)
 // • U8G2_R1: 90 degrees clockwise (Portrait)
 // • U8G2_R2: 180 degrees clockwise (Inverted Landscape)
-//• U8G2_R3: 270 degrees clockwise (Inverted Portrait)
+// • U8G2_R3: 270 degrees clockwise (Inverted Portrait)
 
 // *******************************************************************************************************************
 // Debugging
