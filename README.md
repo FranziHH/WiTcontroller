@@ -13,6 +13,8 @@ My Changes Are:
 
 A WiTcontroller is a simple DIY, handheld controller that talks to a WiThrottle Server (JMRI, DCC-EX EX-CommandStation, Digitrax LnWi and many others) using the WiThrottle protocol to control DCC model trains.
 
+([A clean web page version of this readme is available here.](https://flash62au.github.io/WiTcontroller/))
+
 > [See full change log/ version history](change_log.md)
 
 ---
